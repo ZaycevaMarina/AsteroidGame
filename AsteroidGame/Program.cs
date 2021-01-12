@@ -14,10 +14,18 @@ namespace AsteroidGame
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            Form game_form = new Form();
+            game_form.Width = 800;
+            game_form.Height = 600;
+            Game.Initialize(game_form);
+            game_form.Show();
+            Game.Draw();
+            Application.Run(game_form);
+
         }
     }
 }
