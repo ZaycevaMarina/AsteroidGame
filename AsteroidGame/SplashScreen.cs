@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace AsteroidGame
 {
-    static class Game
+    class SplashScreen
     {
         private static BufferedGraphicsContext __Context;
         private static BufferedGraphics __Buffer;
         private static VisualObject[] __GameObjects;
         private static int __VisualObjectsCount = 30;
         private static int __VisualObjectsSize = 30;
-        private static int __TimerInterval = 100;
+        private static int __TimerInterval = 50;
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static void Initialize(Form GameForm)
@@ -32,7 +32,7 @@ namespace AsteroidGame
             Draw();
         }
         private static void Load()
-        {   
+        {
             __GameObjects = new VisualObject[__VisualObjectsCount];
             int size;
             for (var i = 0; i < __GameObjects.Length; i++)
@@ -43,7 +43,7 @@ namespace AsteroidGame
                     case 0:
                         __GameObjects[i] = new VisualObject(
                                                     new Point(600, i * 20),
-                                                    new Point(-i, 0), //new Point(size-i, size - i),
+                                                    new Point(size-i, size - i),
                                                     new Size(size, size));
 
                         break;
@@ -56,10 +56,10 @@ namespace AsteroidGame
                     case 2:
                         __GameObjects[i] = new Comet(
                                                     new Point(600, i * 20),
-                                                    new Point(size+i, size+i),
+                                                    new Point(size + i, size + i),
                                                     new Size(size, size));
                         break;
-                }                   
+                }
             }
         }
 

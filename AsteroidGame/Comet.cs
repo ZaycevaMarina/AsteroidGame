@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace AsteroidGame
 {
@@ -14,7 +9,7 @@ namespace AsteroidGame
         {
         }
         /// <summary>
-        /// Отрисовка закмкнутой кривой линии
+        /// Отрисовка закмкнутой кривой линии по трём случайным точкам
         /// </summary>
         /// <param name="g"></param>
         public override void Draw(Graphics g)
@@ -23,7 +18,6 @@ namespace AsteroidGame
             Point point1 = new Point(_Position.X, _Position.Y);
             Point point2 = new Point(_Position.X + dif, _Position.Y + dif);
             Point point3 = new Point(_Position.X - dif, _Position.Y);
-            Point point4 = new Point(_Position.X, _Position.Y - dif);
             Point[] curvePoints = { point1, point2, point3};
             g.DrawClosedCurve(Pens.Aquamarine, curvePoints);            
         }

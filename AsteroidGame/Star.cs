@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace AsteroidGame
 {
@@ -50,7 +45,7 @@ namespace AsteroidGame
             _Position.X += _Direction.X;
 
             if (_Position.X < 0)
-                _Position.X = Game.Width + _Size.Width;
+                _Position.X = SplashScreen.Width + _Size.Width;
         }
     }
 }
