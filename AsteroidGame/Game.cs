@@ -43,7 +43,7 @@ namespace AsteroidGame
                     case 0:
                         __GameObjects[i] = new VisualObject(
                                                     new Point(600, i * 20),
-                                                    new Point(size-i, size - i),
+                                                    new Point(-i, 0), //new Point(size-i, size - i),
                                                     new Size(size, size));
 
                         break;

@@ -30,8 +30,8 @@ namespace AsteroidGame
             //   Pens.AliceBlue,
             //   _Position.X, _Position.Y,
             //   _Size.Width, _Size.Height);
-
-            Image newImage = Image.FromFile("4.jpg");
+            string image_name =(_Size.Width % 4 + 1).ToString() + ".jpg";
+            Image newImage = Image.FromFile(image_name);
             g.DrawImage(newImage, new Point(_Position.X, _Position.Y));
         }
         /// <summary>
