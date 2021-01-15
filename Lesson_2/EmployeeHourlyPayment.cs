@@ -13,9 +13,10 @@ namespace Lesson_2
         /// Почасовая ставка
         /// </summary>
         private double HourlyRate;
-        public EmployeeHourlyPayment(double hourlyRate)
+        public EmployeeHourlyPayment(double hourlyRate):base()
         {
             HourlyRate = hourlyRate;
+            AverageMonthlySalary = CalculateAverageMonthlySalary();
         }
         /// <summary>
         /// Cреднемесячная заработная плата
@@ -28,7 +29,13 @@ namespace Lesson_2
 
         public override string ToString()
         {
-            return $"Работник  с  почасовой  оплатой {HourlyRate:F2}, среднемесячная заработная плата {CalculateAverageMonthlySalary():F2}";
+            return "Работник  с  почасовой  оплатой " + String.Format("{0," + __Format + "}", HourlyRate)
+                    + " среднемесячная заработная плата - " + String.Format("{0," + __Format + "}", AverageMonthlySalary);
+        }
+        public override string ToString(string format)
+        {
+            return "Работник  с  почасовой  оплатой " + String.Format("{0," + format + "}", HourlyRate)
+                    + " среднемесячная заработная плата - " + String.Format("{0," + format + "}", AverageMonthlySalary);
         }
     }
 }

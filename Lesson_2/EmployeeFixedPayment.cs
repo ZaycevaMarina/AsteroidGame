@@ -16,6 +16,7 @@ namespace Lesson_2
         public EmployeeFixedPayment(double fixedPayment)
         {
             FixedPayment = fixedPayment;
+            AverageMonthlySalary = CalculateAverageMonthlySalary();
         }
         /// <summary>
         /// Cреднемесячная заработная плата
@@ -28,7 +29,13 @@ namespace Lesson_2
 
         public override string ToString()
         {
-            return $"Работник  с  фиксиров.  оплатой {FixedPayment:F2}, среднемесячная заработная плата {CalculateAverageMonthlySalary():F2}";
+            return "Работник  с  фиксиров.  оплатой " + String.Format("{0," + __Format + "}", FixedPayment)
+                    + " среднемесячная заработная плата - " + String.Format("{0," + __Format + "}", CalculateAverageMonthlySalary());
+        }
+        public override string ToString(string format)
+        {
+            return "Работник  с  фиксиров.  оплатой " + String.Format("{0," + format + "}", FixedPayment)
+                        + " среднемесячная заработная плата - " + String.Format("{0," + format + "}", CalculateAverageMonthlySalary());
         }
     }
 }
