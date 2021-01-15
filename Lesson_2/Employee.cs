@@ -14,5 +14,7 @@ namespace Lesson_2
         /// </summary>
         /// <returns></returns>
         public abstract double CalculateAverageMonthlySalary();
+
+        public abstract override string ToString();
     }
 }

@@ -25,5 +25,10 @@ namespace Lesson_2
         {
             return 20.8 * 8 * HourlyRate;
         }
+
+        public override string ToString()
+        {
+            return $"Работник  с  почасовой  оплатой {HourlyRate:F2}, среднемесячная заработная плата {CalculateAverageMonthlySalary():F2}";
+        }
     }
 }

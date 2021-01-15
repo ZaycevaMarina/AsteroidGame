@@ -25,5 +25,10 @@ namespace Lesson_2
         {
             return FixedPayment;
         }
+
+        public override string ToString()
+        {
+            return $"Работник  с  фиксиров.  оплатой {FixedPayment:F2}, среднемесячная заработная плата {CalculateAverageMonthlySalary():F2}";
+        }
     }
 }

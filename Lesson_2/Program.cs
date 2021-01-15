@@ -16,7 +16,27 @@ namespace Lesson_2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Для завершния нажмите любую кнопку...");
+            Console.WriteLine("-----Класс работников  с  почасовой  оплатой  (один  из  потомков) и  фиксированной оплатой-----");
+            int count_employees = 30;
+            Employee[] employees = new Employee[count_employees];
+            Random rnd = new Random(100);
+            double payment;
+            for(int i = 0; i < employees.Length; i++)
+            {
+                payment = rnd.NextDouble();
+                if (i % 2 == 0)
+                    employees[i] = new EmployeeHourlyPayment(payment * 1_000);
+                else
+                    employees[i] = new EmployeeFixedPayment(payment * 200_000);
+            }
+            Console.WriteLine("Массив из {count_employees} сотрудников:");
+            foreach(Employee emp in employees)
+            {
+                Console.WriteLine(emp.ToString());
+            }
+
+
+                Console.WriteLine("Для завершния нажмите любую кнопку...");
             Console.ReadKey();
         }
     }
