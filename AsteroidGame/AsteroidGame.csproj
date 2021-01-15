@@ -7,22 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Debug\net5.0-windows\4.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\net5.0-windows\3.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\net5.0-windows\2.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\net5.0-windows\1.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -38,7 +22,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Update="Images\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

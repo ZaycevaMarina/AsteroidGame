@@ -9,6 +9,7 @@ namespace AsteroidGame
         protected Point _Direction;
         protected Size _Size;
         public static Random __Rnd;
+        private static Image __Image;
         public VisualObject(Point Position, Point Direction, Size Size)
         {
             _Position = Position;
@@ -18,16 +19,11 @@ namespace AsteroidGame
         static VisualObject()
         {
             __Rnd = new Random();
+            __Image = Image.FromFile("Images/2.jpg");
         }
         public virtual void Draw(Graphics g)
         {
-            //g.DrawEllipse(
-            //   Pens.AliceBlue,
-            //   _Position.X, _Position.Y,
-            //   _Size.Width, _Size.Height);
-            string image_name =(_Size.Width % 4 + 1).ToString() + ".jpg";
-            Image newImage = Image.FromFile(image_name);
-            g.DrawImage(newImage, new Point(_Position.X, _Position.Y));
+            g.DrawImage(__Image, new Point(_Position.X, _Position.Y));
         }
         /// <summary>
         /// Движение только справа налево.
