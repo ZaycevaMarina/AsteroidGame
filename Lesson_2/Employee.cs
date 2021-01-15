@@ -9,15 +9,18 @@ namespace Lesson_2
     /// </summary>
     abstract class Employee : IComparable
     {
-        protected double AverageMonthlySalary { get; set; }
-        protected static string __Format = "10:0,0.00";
-        public Employee()
-        {
-            //AverageMonthlySalary = CalculateAverageMonthlySalary();
-        }
-
         /// <summary>
         /// Cреднемесячная заработная плата
+        /// </summary>
+        protected double AverageMonthlySalary { get; set; }
+        /// <summary>
+        /// Формат для формирования строки значений
+        /// </summary>
+        protected static string __Format = "10:0,0.00";
+
+
+        /// <summary>
+        /// Вычисление среднемесячной заработной платы
         /// </summary>
         /// <returns></returns>
         public abstract double CalculateAverageMonthlySalary();

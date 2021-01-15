@@ -12,16 +12,12 @@ namespace Lesson_2
         /// <summary>
         /// Фиксированная месячная оплата
         /// </summary>
-        private double FixedPayment;
+        private readonly double FixedPayment;
         public EmployeeFixedPayment(double fixedPayment)
         {
             FixedPayment = fixedPayment;
             AverageMonthlySalary = CalculateAverageMonthlySalary();
         }
-        /// <summary>
-        /// Cреднемесячная заработная плата
-        /// </summary>
-        /// <returns></returns>
         public override double CalculateAverageMonthlySalary()
         {
             return FixedPayment;

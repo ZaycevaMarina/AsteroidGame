@@ -12,16 +12,12 @@ namespace Lesson_2
         /// <summary>
         /// Почасовая ставка
         /// </summary>
-        private double HourlyRate;
-        public EmployeeHourlyPayment(double hourlyRate):base()
+        private readonly double HourlyRate;
+        public EmployeeHourlyPayment(double hourlyRate)
         {
             HourlyRate = hourlyRate;
             AverageMonthlySalary = CalculateAverageMonthlySalary();
         }
-        /// <summary>
-        /// Cреднемесячная заработная плата
-        /// </summary>
-        /// <returns></returns>
         public override double CalculateAverageMonthlySalary()
         {
             return 20.8 * 8 * HourlyRate;
