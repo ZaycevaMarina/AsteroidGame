@@ -34,30 +34,36 @@ namespace AsteroidGame
         private static void Load()
         {
             __GameObjects = new VisualObject[__VisualObjectsCount];
-            int size;
+            int size, rnd;
             for (var i = 0; i < __GameObjects.Length; i++)
             {
-                size = VisualObject.__Rnd.Next() % __VisualObjectsSize;
-                switch (size % 3)
+                size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
+                rnd = VisualObject.__Rnd.Next(15, Height);//Для класса Bullet
+
+                switch (size % 4)
                 {
                     case 0:
-                        __GameObjects[i] = new VisualObject(
-                                                    new Point(600, i * 20),
-                                                    new Point(-i, 0), //new Point(size-i, size - i),
-                                                    new Size(size, size));
+                        __GameObjects[i] = new VisualObjects.Star(
+                                                     new Point(600, i * 20),
+                                                     new Point(-i, 0),
+                                                     new Size(size, size));
 
                         break;
                     case 1:
-                        __GameObjects[i] = new Star(
-                                                    new Point(600, i * 20),
-                                                    new Point(-i, 0),
-                                                    new Size(size, size));
-                        break;
-                    case 2:
-                        __GameObjects[i] = new Comet(
+                        __GameObjects[i] = new VisualObjects.Comet(
                                                     new Point(600, i * 20),
                                                     new Point(size + i, size + i),
                                                     new Size(size, size));
+                        break;
+                    case 2:
+                        __GameObjects[i] = new VisualObjects.Asteroid(
+                                                    new Point(600, i * 20),
+                                                    new Point(-i, 0),
+                                                    new Size(size, size),
+                                                    Image.FromFile("Images/4.jpg"));
+                        break;
+                    case 3:
+                        __GameObjects[i] = new VisualObjects.Bullet(rnd);
                         break;
                 }
             }
