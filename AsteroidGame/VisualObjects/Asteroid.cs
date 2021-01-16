@@ -3,10 +3,10 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObjects
 {
-    class Asteroid:VisualObject
+    class Asteroid:VisualObject, ICloneable
     {
         public int Power { get; set; }
-        private Image Image;
+        private readonly Image Image;
         public Asteroid(Point pos, Point dir, Size size, Image Image) : base(pos, dir, size)
         {
             Power = 1;
@@ -14,7 +14,6 @@ namespace AsteroidGame.VisualObjects
         }
         public override void Draw(Graphics g)
         {
-            //g.FillEllipse(Brushes.White, _Position.X, _Position.Y, Size.Width, Size.Height);
             g.DrawImage(Image, new Point(_Position.X, _Position.Y));
         }
         public override void Update()
@@ -32,5 +31,16 @@ namespace AsteroidGame.VisualObjects
             if (_Position.Y > SplashScreen.Height + _Size.Height)
                 _Position.Y = 0;
         }
+        public object Clone()
+        {
+            Asteroid asteroid = new Asteroid(
+                new Point(_Position.X, _Position.Y), 
+                new Point(_Direction.X, _Direction.Y), 
+                new Size(_Size.Width, _Size.Height), 
+                Image);
+            asteroid.Power = Power;
+            return asteroid;
+        }
+
     }
 }

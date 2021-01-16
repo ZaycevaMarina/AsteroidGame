@@ -3,7 +3,12 @@ using System.Drawing;
 
 namespace AsteroidGame
 {
-    internal abstract class VisualObject
+    interface ICollision
+    {
+        bool Collision(ICollision obj);
+        Rectangle Rect { get; }
+    }
+    internal abstract class VisualObject : ICollision
     {
         protected Point _Position;
         protected Point _Direction;
@@ -25,5 +30,10 @@ namespace AsteroidGame
         /// Движение только справа налево.
         /// </summary>
         public abstract void Update();
+
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);
+
+        public Rectangle Rect => new Rectangle(_Position, _Size);
+
     }
 }

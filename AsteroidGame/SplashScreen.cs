@@ -79,8 +79,21 @@ namespace AsteroidGame
         }
         private static void Update()
         {
-            foreach (var game_object in __GameObjects)
+            foreach (VisualObject game_object in __GameObjects)
+            {
                 game_object.Update();
+                if(game_object is VisualObjects.Asteroid)
+                {
+                    foreach(VisualObject vo in __GameObjects)
+                    {
+                        if(vo is VisualObjects.Bullet)
+                            if(game_object.Collision(vo))
+                            {
+                                System.Media.SystemSounds.Hand.Play();
+                            }
+                    }
+                }
+            }
         }
     }
 }
