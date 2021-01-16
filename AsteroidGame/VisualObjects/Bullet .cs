@@ -31,5 +31,10 @@ namespace AsteroidGame.VisualObjects
         {
             return new Bullet(_Position.Y);
         }
+
+        public void Restart()
+        {
+            _Position.X = 0;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace AsteroidGame
             Application.SetCompatibleTextRenderingDefault(false);
 
             __GameForm = new Form();
-            __GameForm.Width = 800;
+            __GameForm.Width = 1800;
             __GameForm.Height = 600;
             __GameForm.Text = "Астероиды";
             //Добавление кнопок
@@ -25,7 +25,6 @@ namespace AsteroidGame
             btnStartGame.Text = "Начало игры";
             btnStartGame.Width = btnStartGame.Text.Length * 10;
             btnStartGame.Click += btnStartGameEvent;
-            btnStartGame.MouseClick += btnStartGameEvent;
             __GameForm.Controls.Add(btnStartGame);
 
             Button btnRecords = new Button();
@@ -33,7 +32,6 @@ namespace AsteroidGame
             btnRecords.Location = new Point(btnStartGame.Right + 1, 0);
             btnRecords.Width = btnStartGame.Width;
             btnRecords.Click += btnRecordsEvent;
-            btnRecords.MouseClick += btnRecordsEvent;
             __GameForm.Controls.Add(btnRecords);
 
             Button btnStopGame = new Button();
@@ -41,7 +39,6 @@ namespace AsteroidGame
             btnStopGame.Location = new Point(btnRecords.Right + 1, 0);
             btnStopGame.Width = btnStartGame.Width;
             btnStopGame.Click += btnStopGameEvent;
-            btnStopGame.MouseClick += btnStopGameEvent;
             __GameForm.Controls.Add(btnStopGame);
             //Добавление на заставку имени автора
             Label lbl_author = new Label();
@@ -53,15 +50,18 @@ namespace AsteroidGame
             Application.Run(__GameForm);            
         }
 
-        static void StartGame()
-        {
-            SplashScreen.Initialize(__GameForm);
-            __GameForm.Show();
-            SplashScreen.Draw();
-        }
         static void btnStartGameEvent(object sender, EventArgs e)
         {
-            StartGame();
+            try
+            {
+                SplashScreen.Initialize(__GameForm);
+                __GameForm.Show();
+                SplashScreen.Draw();
+            }
+            catch (ArgumentOutOfRangeException)
+            {                
+                MessageBox.Show("Недопустимый размера экрана в классе SplashScreen (не более 1000)");
+            }
         }
 
         static void btnRecordsEvent(object sender, EventArgs e)

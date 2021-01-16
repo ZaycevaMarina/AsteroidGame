@@ -41,6 +41,10 @@ namespace AsteroidGame.VisualObjects
             asteroid.Power = Power;
             return asteroid;
         }
-
+        public void Restart()
+        {
+            _Position.Y = SplashScreen.Height;
+            _Position.X = SplashScreen.Width;
+        }
     }
 }

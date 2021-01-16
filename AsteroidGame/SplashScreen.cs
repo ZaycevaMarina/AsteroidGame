@@ -8,14 +8,20 @@ namespace AsteroidGame
     {
         private static BufferedGraphicsContext __Context;
         private static BufferedGraphics __Buffer;
-        private static VisualObject[] __GameObjects;
-        private static int __VisualObjectsCount = 30;
+        private static VisualObject[] __VisualObjects;
+        private static VisualObjects.Asteroid[] __Asteroids;
+        private static VisualObjects.Bullet[] __Bullets;
+        private static int __CountVisualObjects = 30;
+        private static int __CountAsteroids = 10;
+        private static int __CountBullets = 5;
         private static int __VisualObjectsSize = 30;
-        private static int __TimerInterval = 50;
+        private static int __TimerInterval = 100;
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static void Initialize(Form GameForm)
         {
+            if (GameForm.Width > 1000 || GameForm.Height > 1000 || GameForm.Width < 0 || GameForm.Height < 0)
+                throw new ArgumentOutOfRangeException();
             Width = GameForm.Width;
             Height = GameForm.Height;
             __Context = BufferedGraphicsManager.Current;
@@ -33,39 +39,44 @@ namespace AsteroidGame
         }
         private static void Load()
         {
-            __GameObjects = new VisualObject[__VisualObjectsCount];
-            int size, rnd;
-            for (var i = 0; i < __GameObjects.Length; i++)
+            __VisualObjects = new VisualObject[__CountVisualObjects];
+            __Asteroids = new VisualObjects.Asteroid[__CountAsteroids];
+            __Bullets = new VisualObjects.Bullet[__CountBullets];
+            int size, rnd, i;
+            for (i = 0; i < __VisualObjects.Length; i++)
             {
                 size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
-                rnd = VisualObject.__Rnd.Next(15, Height);//Для класса Bullet
 
-                switch (size % 4)
+                switch (size % 2)
                 {
                     case 0:
-                        __GameObjects[i] = new VisualObjects.Star(
+                        __VisualObjects[i] = new VisualObjects.Star(
                                                      new Point(600, i * 20),
                                                      new Point(-i, 0),
                                                      new Size(size, size));
 
                         break;
                     case 1:
-                        __GameObjects[i] = new VisualObjects.Comet(
+                        __VisualObjects[i] = new VisualObjects.Comet(
                                                     new Point(600, i * 20),
                                                     new Point(size + i, size + i),
                                                     new Size(size, size));
                         break;
-                    case 2:
-                        __GameObjects[i] = new VisualObjects.Asteroid(
+                }
+            }
+            for (i = 0; i < __Asteroids.Length; i++)
+            {
+                size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
+                __Asteroids[i] = new VisualObjects.Asteroid(
                                                     new Point(600, i * 20),
                                                     new Point(-i, 0),
                                                     new Size(size, size),
                                                     Image.FromFile("Images/4.jpg"));
-                        break;
-                    case 3:
-                        __GameObjects[i] = new VisualObjects.Bullet(rnd);
-                        break;
-                }
+            }
+            for (i = 0; i < __Bullets.Length; i++)
+            {
+                rnd = VisualObject.__Rnd.Next(15, Height);
+                __Bullets[i] = new VisualObjects.Bullet(rnd);
             }
         }
 
@@ -73,26 +84,36 @@ namespace AsteroidGame
         {
             Graphics g = __Buffer.Graphics;
             g.Clear(Color.Black);
-            foreach (var game_object in __GameObjects)
-                game_object.Draw(g);
+            foreach (VisualObject visual_object in __VisualObjects)
+                visual_object.Draw(g);
+            foreach (VisualObjects.Asteroid asteroid in __Asteroids)
+                asteroid.Draw(g);
+            foreach (VisualObjects.Bullet bullet in __Bullets)
+                bullet.Draw(g);
             __Buffer.Render();
         }
         private static void Update()
         {
-            foreach (VisualObject game_object in __GameObjects)
+            foreach (VisualObject visual_object in __VisualObjects)
             {
-                game_object.Update();
-                if(game_object is VisualObjects.Asteroid)
+                visual_object.Update();
+            }
+            foreach (VisualObjects.Asteroid asteroid in __Asteroids)
+            {
+                foreach (VisualObjects.Bullet bullet in __Bullets)
                 {
-                    foreach(VisualObject vo in __GameObjects)
+                    if (asteroid.Collision(bullet))
                     {
-                        if(vo is VisualObjects.Bullet)
-                            if(game_object.Collision(vo))
-                            {
-                                System.Media.SystemSounds.Hand.Play();
-                            }
+                        System.Media.SystemSounds.Hand.Play();
+                        asteroid.Restart();
+                        bullet.Restart();
                     }
                 }
+                asteroid.Update();
+            }
+            foreach (VisualObjects.Bullet bullet in __Bullets)
+            {
+                bullet.Update();
             }
         }
     }
