@@ -72,7 +72,7 @@ namespace AsteroidGame
                     __Asteroids[i] = new VisualObjects.Asteroid(
                                                         new Point(600, i * 20),
                                                         new Point(-i, 0),
-                                                        new Size(-size, size),
+                                                        new Size(size, size),
                                                         Image.FromFile("Images/4.jpg"));
                 }
                 for (i = 0; i < __Bullets.Length; i++)

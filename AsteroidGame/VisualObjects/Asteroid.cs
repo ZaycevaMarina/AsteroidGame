@@ -48,8 +48,8 @@ namespace AsteroidGame.VisualObjects
         }
         public void Restart()
         {
-            _Position.Y = SplashScreen.Height;
-            _Position.X = SplashScreen.Width;
+            _Position.Y = SplashScreen.Height - _Position.Y;
+            _Position.X = SplashScreen.Width + _Size.Width;
         }
     }
 }
