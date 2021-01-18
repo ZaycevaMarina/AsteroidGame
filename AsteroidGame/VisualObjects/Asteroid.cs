@@ -11,7 +11,7 @@ namespace AsteroidGame.VisualObjects
         {
             if (Position.X < 0 || Position.X > SplashScreen.Width || Position.Y < 0 || Position.Y > SplashScreen.Height//Неверная позиция
                || Size.Width < 0 || Size.Height < 0 //Отричательные размеры
-               || Direction.X > 100 || Direction.Y > 100//Слишком большая скорость
+               || Direction.X > VisualObject.__ToFastSpead || Direction.Y > VisualObject.__ToFastSpead//Слишком большая скорость
                || Image == null)//Отсутствует изображение
                 throw new GameObjectException();
             Power = 1;

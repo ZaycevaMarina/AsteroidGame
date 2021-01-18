@@ -14,11 +14,13 @@ namespace AsteroidGame
         protected Point _Direction;
         protected Size _Size;
         public static Random __Rnd;
+        protected static int __ToFastSpead = 100;
+
         protected VisualObject(Point Position, Point Direction, Size Size)
         {
             if (Position.X < 0 || Position.X > SplashScreen.Width || Position.Y < 0 || Position.Y > SplashScreen.Height//Неверная позиция
                 || Size.Width < 0 || Size.Height < 0 //Отричательные размеры
-                || Direction.X > 100 || Direction.Y > 100)//Слишком большая скорость
+                || Direction.X > __ToFastSpead || Direction.Y > __ToFastSpead)//Слишком большая скорость
                 throw new GameObjectException();
             _Position = Position;
             _Direction = Direction;
