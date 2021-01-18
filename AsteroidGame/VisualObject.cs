@@ -16,6 +16,10 @@ namespace AsteroidGame
         public static Random __Rnd;
         protected VisualObject(Point Position, Point Direction, Size Size)
         {
+            if (Position.X < 0 || Position.X > SplashScreen.Width || Position.Y < 0 || Position.Y > SplashScreen.Height//Неверная позиция
+                || Size.Width < 0 || Size.Height < 0 //Отричательные размеры
+                || Direction.X > 100 || Direction.Y > 100)//Слишком большая скорость
+                throw new GameObjectException();
             _Position = Position;
             _Direction = Direction;
             _Size = Size;

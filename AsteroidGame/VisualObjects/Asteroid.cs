@@ -7,8 +7,13 @@ namespace AsteroidGame.VisualObjects
     {
         public int Power { get; set; }
         private readonly Image Image;
-        public Asteroid(Point pos, Point dir, Size size, Image Image) : base(pos, dir, size)
+        public Asteroid(Point Position, Point Direction, Size Size, Image Image) : base(Position, Direction, Size)
         {
+            if (Position.X < 0 || Position.X > SplashScreen.Width || Position.Y < 0 || Position.Y > SplashScreen.Height//Неверная позиция
+               || Size.Width < 0 || Size.Height < 0 //Отричательные размеры
+               || Direction.X > 100 || Direction.Y > 100//Слишком большая скорость
+               || Image == null)//Отсутствует изображение
+                throw new GameObjectException();
             Power = 1;
             this.Image = Image;
         }

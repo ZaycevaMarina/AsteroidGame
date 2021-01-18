@@ -39,44 +39,51 @@ namespace AsteroidGame
         }
         private static void Load()
         {
-            __VisualObjects = new VisualObject[__CountVisualObjects];
-            __Asteroids = new VisualObjects.Asteroid[__CountAsteroids];
-            __Bullets = new VisualObjects.Bullet[__CountBullets];
-            int size, rnd, i;
-            for (i = 0; i < __VisualObjects.Length; i++)
+            try
             {
-                size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
-
-                switch (size % 2)
+                __VisualObjects = new VisualObject[__CountVisualObjects];
+                __Asteroids = new VisualObjects.Asteroid[__CountAsteroids];
+                __Bullets = new VisualObjects.Bullet[__CountBullets];
+                int size, rnd, i;
+                for (i = 0; i < __VisualObjects.Length; i++)
                 {
-                    case 0:
-                        __VisualObjects[i] = new VisualObjects.Star(
-                                                     new Point(600, i * 20),
-                                                     new Point(-i, 0),
-                                                     new Size(size, size));
+                    size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
 
-                        break;
-                    case 1:
-                        __VisualObjects[i] = new VisualObjects.Comet(
-                                                    new Point(600, i * 20),
-                                                    new Point(size + i, size + i),
-                                                    new Size(size, size));
-                        break;
+                    switch (size % 2)
+                    {
+                        case 0:
+                            __VisualObjects[i] = new VisualObjects.Star(
+                                                         new Point(600, i * 20),
+                                                         new Point(-i, 0),
+                                                         new Size(size, size));
+
+                            break;
+                        case 1:
+                            __VisualObjects[i] = new VisualObjects.Comet(
+                                                        new Point(600, i * 20),
+                                                        new Point(size + i, size + i),
+                                                        new Size(size, size));
+                            break;
+                    }
+                }
+                for (i = 0; i < __Asteroids.Length; i++)
+                {
+                    size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
+                    __Asteroids[i] = new VisualObjects.Asteroid(
+                                                        new Point(600, i * 20),
+                                                        new Point(-i, 0),
+                                                        new Size(-size, size),
+                                                        Image.FromFile("Images/4.jpg"));
+                }
+                for (i = 0; i < __Bullets.Length; i++)
+                {
+                    rnd = VisualObject.__Rnd.Next(15, Height);
+                    __Bullets[i] = new VisualObjects.Bullet(rnd);
                 }
             }
-            for (i = 0; i < __Asteroids.Length; i++)
+            catch(GameObjectException)
             {
-                size = VisualObject.__Rnd.Next(2, __VisualObjectsSize);
-                __Asteroids[i] = new VisualObjects.Asteroid(
-                                                    new Point(600, i * 20),
-                                                    new Point(-i, 0),
-                                                    new Size(size, size),
-                                                    Image.FromFile("Images/4.jpg"));
-            }
-            for (i = 0; i < __Bullets.Length; i++)
-            {
-                rnd = VisualObject.__Rnd.Next(15, Height);
-                __Bullets[i] = new VisualObjects.Bullet(rnd);
+                throw new GameObjectException();
             }
         }
 

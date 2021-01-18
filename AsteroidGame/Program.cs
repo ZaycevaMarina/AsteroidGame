@@ -17,7 +17,7 @@ namespace AsteroidGame
             Application.SetCompatibleTextRenderingDefault(false);
 
             __GameForm = new Form();
-            __GameForm.Width = 1800;
+            __GameForm.Width = 800;
             __GameForm.Height = 600;
             __GameForm.Text = "Астероиды";
             //Добавление кнопок
@@ -61,6 +61,10 @@ namespace AsteroidGame
             catch (ArgumentOutOfRangeException)
             {                
                 MessageBox.Show("Недопустимый размера экрана в классе SplashScreen (не более 1000)");
+            }
+            catch (GameObjectException)
+            {
+                MessageBox.Show("Неправильные характеристики объектов игры (отрицательные размеры, слишком большая скорость, неверная позиция)");
             }
         }
 
