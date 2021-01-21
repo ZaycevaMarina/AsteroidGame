@@ -30,8 +30,8 @@ namespace Lesson_2
         }
         public override string ToString(string format)
         {
-            return "Работник  с  фиксиров.  оплатой " + String.Format("{0," + format + "}", FixedPayment)
-                        + " среднемесячная заработная плата - " + String.Format("{0," + format + "}", CalculateAverageMonthlySalary());
+            return "Работник  с  фиксиров.  оплатой " + FixedPayment.ToString(format)
+                        + " среднемесячная заработная плата - " + CalculateAverageMonthlySalary().ToString(format);
         }
     }
 }
