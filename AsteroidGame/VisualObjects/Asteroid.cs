@@ -5,7 +5,7 @@ namespace AsteroidGame.VisualObjects
 {
     class Asteroid:VisualObject, ICloneable
     {
-        public int Power { get; set; }
+        public int Power { get; set; } = 3;
         private readonly Image Image;
         public Asteroid(Point Position, Point Direction, Size Size, Image Image) : base(Position, Direction, Size)
         {
