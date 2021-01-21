@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObjects
 {
-    class Asteroid:VisualObject, ICloneable
+    class Asteroid:VisualObject, ICloneable, ICollision
     {
         public int Power { get; set; } = 3;
         private readonly Image Image;
@@ -36,6 +36,10 @@ namespace AsteroidGame.VisualObjects
             if (_Position.Y > SplashScreen.Height + _Size.Height)
                 _Position.Y = 0;
         }
+        public Rectangle Rect => new Rectangle(_Position, _Size);
+
+        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
+
         public object Clone()
         {
             Asteroid asteroid = new Asteroid(
