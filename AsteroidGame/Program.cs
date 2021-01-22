@@ -40,6 +40,7 @@ namespace AsteroidGame
             btnStopGame.Width = btnStartGame.Width;
             btnStopGame.Click += btnStopGameEvent;
             __GameForm.Controls.Add(btnStopGame);
+
             //Добавление на заставку имени автора
             Label lbl_author = new Label();
             lbl_author.Text = "(c) Зайцева Марина";
@@ -47,8 +48,38 @@ namespace AsteroidGame
             lbl_author.Location = new Point(btnStopGame.Right + 10, 0);
             __GameForm.Controls.Add(lbl_author);
 
+            //Обработка нажатия кнопок веерх и вниз для управления космческим кораблём
+            __GameForm.KeyPreview = true;//Сначала форма получает события клавиатуры, а затем активный элемент управления получает события клавиатуры
+            __GameForm.KeyDown+=Form_KeyDown;
+            SetKeyPreview(__GameForm.Controls);//Обработка формой событий клавиатуры
+
             Application.Run(__GameForm);            
         }
+
+        private static void SetKeyPreview(Control.ControlCollection cc)
+        {
+            if(cc !=null)
+            {
+                foreach(Control control in cc)
+                {
+                    control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
+                    SetKeyPreview(control.Controls);
+                }
+            }
+        }
+
+        private static void control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down||e.KeyCode==Keys.ControlKey)
+                e.IsInputKey = true;
+        }
+
+
+        private static void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            SplashScreen.OnGameForm_KeyDown(sender, e);
+        }
+
 
         static void btnStartGameEvent(object sender, EventArgs e)
         {

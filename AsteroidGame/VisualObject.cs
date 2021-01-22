@@ -8,7 +8,7 @@ namespace AsteroidGame
         bool Collision(ICollision obj);
         Rectangle Rect { get; }
     }
-    internal abstract class VisualObject : ICollision
+    internal abstract class VisualObject //: ICollision
     {
         protected Point _Position;
         protected Point _Direction;
@@ -32,9 +32,6 @@ namespace AsteroidGame
         }
         public abstract void Draw(Graphics g);
 
-        /// <summary>
-        /// Движение только справа налево.
-        /// </summary>
         public abstract void Update();
 
         public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);

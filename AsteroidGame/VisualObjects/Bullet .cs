@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace AsteroidGame.VisualObjects
 {
-    class Bullet : VisualObject, ICloneable
+    class Bullet : VisualObject, ICollision
     {
         private const int __BulletSizeX = 20;
         private const int __BulletSizeY = 5;
@@ -26,11 +26,8 @@ namespace AsteroidGame.VisualObjects
             g.DrawEllipse(Pens.White, rect);
         }
         public Rectangle Rect => new Rectangle(_Position, _Size);
+        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
 
-        public object Clone()
-        {
-            return new Bullet(_Position.Y);
-        }
 
         public void Restart()
         {
