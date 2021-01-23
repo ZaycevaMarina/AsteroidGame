@@ -14,7 +14,6 @@ namespace AsteroidGame.VisualObjects
                || Direction.X > VisualObject.__ToFastSpead || Direction.Y > VisualObject.__ToFastSpead//Слишком большая скорость
                || Image == null)//Отсутствует изображение
                 throw new GameObjectException();
-            Power = 1;
             this.Image = Image;
         }
         public override void Draw(Graphics g)

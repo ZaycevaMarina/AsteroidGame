@@ -57,11 +57,21 @@ namespace AsteroidGame
             //Обработка нажатия кнопок веерх и вниз для управления космческим кораблём
             __GameForm.KeyPreview = true;//Сначала форма получает события клавиатуры, а затем активный элемент управления получает события клавиатуры
             __GameForm.KeyDown+=Form_KeyDown;
-            SetKeyPreview(__GameForm.Controls);//Обработка формой событий клавиатуры
+            SetKeyPreview(__GameForm.Controls);//Обработка формой событий клавиатуры            
 
-            
+            __WriteLog = __TextFileLogger.Log;
+            //__WriteLog += __ConsoleLogger.Log;
+            //__WriteLog += __DebugLogger.Log;
+            //__WriteLog += __TraceLogger.Log;
 
-            Application.Run(__GameForm);
+            try
+            {
+                Application.Run(__GameForm);
+            }
+            catch (Exception ex)
+            {
+                __WriteLog(ex.Message);
+            }
             __TextFileLogger.Dispose();
         }
 
@@ -91,11 +101,7 @@ namespace AsteroidGame
 
 
         static void btnStartGameEvent(object sender, EventArgs e)
-        {
-            __WriteLog = __TextFileLogger.Log;
-            //__WriteLog += __ConsoleLogger.Log;
-            //__WriteLog += __DebugLogger.Log;
-            //__WriteLog += __TraceLogger.Log;
+        {           
             try
             {
                 SplashScreen.Initialize(__GameForm);

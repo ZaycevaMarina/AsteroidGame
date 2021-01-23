@@ -22,11 +22,12 @@ namespace AsteroidGame
 
         private static Timer __Timer;
         private static int __TimerInterval = 100;
+        private static int __Refresh = -1;
+        private static int __RefreshMax = 10;//Количество раз*__TimerInterval в мс отображения действия игры
+        private static string __GraphicMessage;
         public static int Width { get; set; }
         public static int Height { get; set; }
 
-        private static int __Refresh = -1;
-        private static int __RefreshMax = 10;//Количество раз*__TimerInterval в мс отображения действия игры
         private static Loggers.GraphicsLogger __GraphicsLogger;
 
         public static void Initialize(Form GameForm)
@@ -139,7 +140,7 @@ namespace AsteroidGame
                 g.DrawString("Энерния: " + __SpaceShip.Energy, SystemFonts.DefaultFont, Brushes.White, Width - 100, 0);                
             }
             if(__Refresh > 0)
-                g.DrawString("Пуля сбила астероид", SystemFonts.DefaultFont, Brushes.White, Width - 120 - "Пуля сбила астероид".Length, 20);
+                g.DrawString(__GraphicMessage, SystemFonts.DefaultFont, Brushes.White, Width - 120 - __GraphicMessage.Length, 20);
 
             if (!__Timer.Enabled) return;
             __Buffer.Render();
@@ -153,24 +154,41 @@ namespace AsteroidGame
                 if (obj is ICollision collision_object)
                 {
                     //__SpaceShip.CheckCollision(collision_object);
-                    if (__SpaceShip.CheckCollision(collision_object) && collision_object is VisualObjects.EnergyFiller)
+                    if (__SpaceShip.CheckCollision(collision_object))
                     {
-                        Program.__WriteLog("Прибаление энергии (+5)");
-                        Random rnd = new Random();
-                        __VisualObjects[i] = new VisualObjects.EnergyFiller(
-                                                    new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                                                    new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
-                                                    new Size(5, 5));
-                        continue;
+                        if (collision_object is VisualObjects.EnergyFiller)
+                        {
+                            Program.__WriteLog($"Прибаление энергии (+{(__VisualObjects[i] as VisualObjects.EnergyFiller).Power}). Энерния: " + __SpaceShip.Energy);
+                            __GraphicMessage = "Прибаление энергии";
+                            __Refresh = __RefreshMax;
+
+                            Random rnd = new Random();
+                            __VisualObjects[i] = new VisualObjects.EnergyFiller(
+                                                        new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                                                        new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
+                                                        new Size(5, 5));
+                            continue;
+                        }
+                        else if (collision_object is VisualObjects.Asteroid)
+                        {
+                            Program.__WriteLog($"Космический корабль столкнулся с астероидом (-{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
+                            __GraphicMessage = "Астероид!";
+                            __Refresh = __RefreshMax;
+                            __VisualObjects[i] = null;
+                            continue;
+                        }
                     }
 
                     if (__Bullet?.CheckCollision(collision_object) != true) continue;
+                    __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.Asteroid).Power);                    
+
+                    Program.__WriteLog($"Пуля сбила астероид (+{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
+                    __GraphicMessage = "Пуля сбила астероид";
+                    __Refresh = __RefreshMax;
 
                     __Bullet = null;
                     __VisualObjects[i] = null;
                     System.Media.SystemSounds.Beep.Play();
-                    
-                    Program.__WriteLog("Пуля сбила астероид");
                     __Refresh = __RefreshMax;
                 }
             }
