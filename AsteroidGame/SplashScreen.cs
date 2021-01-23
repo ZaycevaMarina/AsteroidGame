@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 
 namespace AsteroidGame
 {
@@ -22,6 +23,11 @@ namespace AsteroidGame
         private static int __TimerInterval = 100;
         public static int Width { get; set; }
         public static int Height { get; set; }
+
+        private static int __Refresh = -1;
+        private static int __RefreshMax = 10;//Количество раз*__TimerInterval в мс отображения действия игры
+        private static Loggers.GraphicsLogger __GraphicsLogger;
+
         public static void Initialize(Form GameForm)
         {
             if (GameForm.Width > 1000 || GameForm.Height > 1000 || GameForm.Width < 0 || GameForm.Height < 0)
@@ -37,6 +43,9 @@ namespace AsteroidGame
             __Timer.Start();
 
             GameForm.KeyDown += OnGameForm_KeyDown;
+
+            __GraphicsLogger = new Loggers.GraphicsLogger(ref __Buffer, Width);
+            Program.__WriteLog += __GraphicsLogger.Log;
         }
         public static void OnGameForm_KeyDown(object Sender, KeyEventArgs E)
         {
@@ -105,6 +114,7 @@ namespace AsteroidGame
             var g = __Buffer.Graphics;
             g.Clear(Color.DarkBlue);
             g.DrawString("Game over!!!", new Font(FontFamily.GenericSerif, 60, FontStyle.Bold), Brushes.Red, 200, 100);
+            Program.__WriteLog("Корабль сбит. Игра окончена.");
             __Buffer.Render();
         }
 
@@ -117,6 +127,13 @@ namespace AsteroidGame
 
             __SpaceShip.Draw(g);
             __Bullet?.Draw(g);
+
+            if (__SpaceShip != null)
+            {
+                g.DrawString("Energy:" + __SpaceShip.Energy, SystemFonts.DefaultFont, Brushes.White, Width - 100, 0);                
+            }
+            if(__Refresh > 0)
+                g.DrawString("Пуля сбила астероид", SystemFonts.DefaultFont, Brushes.White, Width - 120 - "Пуля сбила астероид".Length, 20);
 
             if (!__Timer.Enabled) return;
             __Buffer.Render();
@@ -136,12 +153,24 @@ namespace AsteroidGame
                     __Bullet = null;
                     __VisualObjects[i] = null;
                     System.Media.SystemSounds.Beep.Play();
+                    
+                    Program.__WriteLog("Пуля сбила астероид");
+                    __Refresh = __RefreshMax;
                 }
             }
 
             foreach (var game_object in __VisualObjects)
                 game_object?.Update();
             __Bullet?.Update();
+            if (__Refresh > int.MinValue)
+                __Refresh--;
+            else
+                __Refresh = 0;
         }
+
+        //private static void LogGrathics(string message)
+        //{
+        //    __Buffer.Graphics.DrawString(message, SystemFonts.DefaultFont, Brushes.White, Width - message.Length - 1, 100);
+        //}
     }
 }

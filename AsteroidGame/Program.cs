@@ -7,6 +7,12 @@ namespace AsteroidGame
     static class Program
     {
         static Form __GameForm;
+        public delegate void Write(string message);
+        public static Write __WriteLog;
+        private static Loggers.ConsoleLogger __ConsoleLogger = new Loggers.ConsoleLogger();
+        private static Loggers.TextFileLogger __TextFileLogger = new Loggers.TextFileLogger("Log.txt");
+        private static Loggers.DebugLogger __DebugLogger = new Loggers.DebugLogger();
+        private static Loggers.TraceLogger __TraceLogger = new Loggers.TraceLogger();
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -53,7 +59,10 @@ namespace AsteroidGame
             __GameForm.KeyDown+=Form_KeyDown;
             SetKeyPreview(__GameForm.Controls);//ќбработка формой событий клавиатуры
 
-            Application.Run(__GameForm);            
+            
+
+            Application.Run(__GameForm);
+            __TextFileLogger.Dispose();
         }
 
         private static void SetKeyPreview(Control.ControlCollection cc)
@@ -83,19 +92,29 @@ namespace AsteroidGame
 
         static void btnStartGameEvent(object sender, EventArgs e)
         {
+            __WriteLog = __TextFileLogger.Log;
+            //__WriteLog += __ConsoleLogger.Log;
+            //__WriteLog += __DebugLogger.Log;
+            //__WriteLog += __TraceLogger.Log;
             try
             {
                 SplashScreen.Initialize(__GameForm);
                 __GameForm.Show();
-                SplashScreen.Draw();
+                SplashScreen.Draw();    
+
+                __WriteLog("»гра началась.");
             }
             catch (ArgumentOutOfRangeException)
-            {                
-                MessageBox.Show("Ќедопустимый размера экрана в классе SplashScreen (не более 1000)");
+            {
+                string ms = "Ќедопустимый размера экрана в классе SplashScreen (не более 1000)";
+                MessageBox.Show(ms);
+                __WriteLog(ms);
             }
             catch (GameObjectException)
             {
-                MessageBox.Show("Ќеправильные характеристики объектов игры (отрицательные размеры, слишком больша€ скорость, неверна€ позици€ или при наличии отсутствует изображение)");
+                string ms = "Ќеправильные характеристики объектов игры (отрицательные размеры, слишком больша€ скорость, неверна€ позици€ или при наличии отсутствует изображение)";
+                MessageBox.Show(ms);
+                __WriteLog(ms);
             }
         }
 
@@ -106,6 +125,7 @@ namespace AsteroidGame
         static void btnStopGameEvent(object sender, EventArgs e)
         {
             __GameForm.Close();
+            __WriteLog("»гра завершена.");
         }
     }
 }
