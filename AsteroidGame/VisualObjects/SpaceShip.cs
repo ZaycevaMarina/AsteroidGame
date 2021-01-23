@@ -37,6 +37,11 @@ namespace AsteroidGame.VisualObjects
                 ChangeEnergy(-asteroid.Power);
             }
 
+            if (is_collision && obj is EnergyFiller energy_filler)
+            {
+                ChangeEnergy(energy_filler.Power);
+            }
+
             return is_collision;
         }
 

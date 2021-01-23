@@ -13,6 +13,7 @@ namespace AsteroidGame
         private static VisualObject[] __VisualObjects;
         private static VisualObjects.Bullet __Bullet;
         private static VisualObjects.SpaceShip __SpaceShip;
+        private static VisualObjects.EnergyFiller __EnergyFiller;
 
         private static int __VisualObjectsCount = 30;
         private static int __VisualObjectsSize = 30;
@@ -83,7 +84,7 @@ namespace AsteroidGame
                     //if (size % 2 == 0)
                         __VisualObjects[i] = new VisualObjects.Star(
                                                      new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                                                     new Point(-rnd.Next(0, __VisualObjectMaxSpeed), 0),
+                                                     new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
                                                      new Size(size, size));
                     //else
                     //    __VisualObjects[i] = new VisualObjects.Comet(
@@ -91,17 +92,21 @@ namespace AsteroidGame
                     //                                new Point(size + i, size + i),
                     //                                new Size(size, size));
                 }
-                for (i = __VisualObjects.Length / 2; i < __VisualObjects.Length; i++)
+                __VisualObjects[__VisualObjects.Length / 2] = new VisualObjects.EnergyFiller(
+                                                    new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                                                    new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
+                                                    new Size(5, 5));
+                for (i = __VisualObjects.Length / 2 + 1; i < __VisualObjects.Length; i++)
                     __VisualObjects[i] = new VisualObjects.Asteroid(
                                                            new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                                                           new Point(-rnd.Next(0, __VisualObjectMaxSpeed), 0),
+                                                           new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
                                                            new Size(__AsteroidObjectsSize, __AsteroidObjectsSize),
                                                            Image.FromFile("Images/4.jpg"));
                 __SpaceShip = new VisualObjects.SpaceShip(
                     new Point(10, 400),
                     new Point(5, 5),
                     new Size(20, 10));
-                __SpaceShip.Destroyed += OnShipDestroyed;
+                __SpaceShip.Destroyed += OnShipDestroyed;               
             }
             catch(GameObjectException)
             {
@@ -127,10 +132,11 @@ namespace AsteroidGame
 
             __SpaceShip.Draw(g);
             __Bullet?.Draw(g);
+            __EnergyFiller?.Draw(g);
 
             if (__SpaceShip != null)
             {
-                g.DrawString("Energy:" + __SpaceShip.Energy, SystemFonts.DefaultFont, Brushes.White, Width - 100, 0);                
+                g.DrawString("Энерния: " + __SpaceShip.Energy, SystemFonts.DefaultFont, Brushes.White, Width - 100, 0);                
             }
             if(__Refresh > 0)
                 g.DrawString("Пуля сбила астероид", SystemFonts.DefaultFont, Brushes.White, Width - 120 - "Пуля сбила астероид".Length, 20);
@@ -146,7 +152,17 @@ namespace AsteroidGame
 
                 if (obj is ICollision collision_object)
                 {
-                    __SpaceShip.CheckCollision(collision_object);
+                    //__SpaceShip.CheckCollision(collision_object);
+                    if (__SpaceShip.CheckCollision(collision_object) && collision_object is VisualObjects.EnergyFiller)
+                    {
+                        Program.__WriteLog("Прибаление энергии (+5)");
+                        Random rnd = new Random();
+                        __VisualObjects[i] = new VisualObjects.EnergyFiller(
+                                                    new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                                                    new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
+                                                    new Size(5, 5));
+                        continue;
+                    }
 
                     if (__Bullet?.CheckCollision(collision_object) != true) continue;
 
@@ -162,6 +178,7 @@ namespace AsteroidGame
             foreach (var game_object in __VisualObjects)
                 game_object?.Update();
             __Bullet?.Update();
+            __EnergyFiller?.Update();
             if (__Refresh > int.MinValue)
                 __Refresh--;
             else
