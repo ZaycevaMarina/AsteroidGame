@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Lesson_2
+{
+    /// <summary>
+    /// Работник  с  фиксированной  оплатой
+    /// </summary>
+    class EmployeeFixedPayment:Employee
+    {
+        /// <summary>
+        /// Фиксированная месячная оплата
+        /// </summary>
+        private readonly double FixedPayment;
+        public EmployeeFixedPayment(double fixedPayment)
+        {
+            FixedPayment = fixedPayment;
+            AverageMonthlySalary = CalculateAverageMonthlySalary();
+        }
+        public override double CalculateAverageMonthlySalary()
+        {
+            return FixedPayment;
+        }
+
+        public override string ToString()
+        {
+            return "Работник  с  фиксиров.  оплатой " + String.Format("{0," + __Format + "}", FixedPayment)
+                    + " среднемесячная заработная плата - " + String.Format("{0," + __Format + "}", CalculateAverageMonthlySalary());
+        }
+        public override string ToString(string format)
+        {
+            return "Работник  с  фиксиров.  оплатой " + FixedPayment.ToString(format)
+                        + " среднемесячная заработная плата - " + CalculateAverageMonthlySalary().ToString(format);
+        }
+    }
+}
