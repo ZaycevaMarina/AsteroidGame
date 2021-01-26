@@ -13,13 +13,14 @@ namespace AsteroidGame
 
         private static VisualObject[] __VisualObjects;
         private static List<VisualObjects.Bullet> __Bullets = new();
+        private static List<VisualObjects.Asteroid> __Asteroids;
         private static VisualObjects.SpaceShip __SpaceShip;
-        //private static VisualObjects.EnergyFiller __EnergyFiller;
 
         private static int __VisualObjectsCount = 30;
-        private static int __VisualObjectsSize = 30;
+        public static int __VisualObjectsSize = 30;
         private static int __AsteroidObjectsSize = 25;
-        private static int __VisualObjectMaxSpeed = 20;
+        public static int __VisualObjectMaxSpeed = 20;
+        private static string __ImageName = "Images/4.jpg";
 
         private static Timer __Timer;
         private static int __TimerInterval = 100;
@@ -81,33 +82,22 @@ namespace AsteroidGame
         {
             try
             {
-                __VisualObjects = new VisualObject[__VisualObjectsCount];
+                __VisualObjects = new VisualObject[__VisualObjectsCount / 2];
                 var rnd = new Random();
                 int size, i;
-                for (i = 0; i < __VisualObjects.Length/2; i++)
+                for (i = 0; i < __VisualObjects.Length - 1; i++)
                 {
                     size = rnd.Next(2, __VisualObjectsSize);
-                    //if (size % 2 == 0)
-                        __VisualObjects[i] = new VisualObjects.Star(
+                     __VisualObjects[i] = new VisualObjects.Star(
                                                      new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
                                                      new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
                                                      new Size(size, size));
-                    //else
-                    //    __VisualObjects[i] = new VisualObjects.Comet(
-                    //                                new Point(600, i * 20),
-                    //                                new Point(size + i, size + i),
-                    //                                new Size(size, size));
                 }
-                __VisualObjects[__VisualObjects.Length / 2] = new VisualObjects.EnergyFiller(
+                __VisualObjects[__VisualObjects.Length - 1] = new VisualObjects.EnergyFiller(
                                                     new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
                                                     new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
                                                     new Size(5, 5));
-                for (i = __VisualObjects.Length / 2 + 1; i < __VisualObjects.Length; i++)
-                    __VisualObjects[i] = new VisualObjects.Asteroid(
-                                                           new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                                                           new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
-                                                           new Size(__AsteroidObjectsSize, __AsteroidObjectsSize),
-                                                           Image.FromFile("Images/4.jpg"));
+                GenerateListAsteroids(__VisualObjectsCount / 2);
                 __SpaceShip = new VisualObjects.SpaceShip(
                     new Point(10, 400),
                     new Point(5, 5),
@@ -125,6 +115,7 @@ namespace AsteroidGame
             var g = __Buffer.Graphics;
             g.Clear(Color.DarkBlue);
             g.DrawString("Game over!!!", new Font(FontFamily.GenericSerif, 60, FontStyle.Bold), Brushes.Red, 200, 100);
+            System.Media.SystemSounds.Exclamation.Play();
             Program.__WriteLog("Корабль сбит. Игра окончена.");
             __Buffer.Render();
         }
@@ -139,7 +130,8 @@ namespace AsteroidGame
             __SpaceShip.Draw(g);
             foreach(VisualObjects.Bullet b in __Bullets)
                 if (b.Enabled) b.Draw(g);
-            //__EnergyFiller?.Draw(g);
+            foreach (VisualObjects.Asteroid asteroid in __Asteroids)
+                if (asteroid.Enabled) asteroid.Draw(g);
 
             if (__SpaceShip != null)
             {
@@ -167,40 +159,16 @@ namespace AsteroidGame
                             __GraphicMessage = "Прибаление энергии";
                             __VisualObjects[i].Enabled = false;
                             (__VisualObjects[i] as VisualObjects.EnergyFiller).Restart();
-                            __Refresh = __RefreshMax;
-
-                            //Random rnd = new Random();
-                            //__VisualObjects[i] = new VisualObjects.EnergyFiller(
-                            //                            new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                            //                            new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
-                            //                            new Size(5, 5));
-                            continue;
-                        }
-                        else if (collision_object is VisualObjects.Asteroid)
-                        {
-                            Program.__WriteLog($"Космический корабль столкнулся с астероидом (-{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
-                            __GraphicMessage = "Астероид!";
-                            __VisualObjects[i].Enabled = false;
+                            System.Media.SystemSounds.Beep.Play();
                             __Refresh = __RefreshMax;
                             continue;
                         }
                     }
                     foreach (VisualObjects.Bullet bullet in __Bullets)
                     {
-                        if (!bullet.Enabled || !bullet.CheckCollision(collision_object)) 
+                        if (!bullet.Enabled || !bullet.CheckCollision(collision_object))
                             continue;
-                        if (__VisualObjects[i] is VisualObjects.Asteroid)
-                        {
-                            __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.Asteroid).Power);
-
-                            Program.__WriteLog($"Пуля сбила астероид (+{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
-                            __GraphicMessage = "Пуля сбила астероид";
-                            bullet.Enabled = false;
-                            __VisualObjects[i].Enabled = false;
-                            System.Media.SystemSounds.Beep.Play();
-                            __Refresh = __RefreshMax;
-                        }
-                        else if(__VisualObjects[i] is VisualObjects.EnergyFiller)
+                        if (__VisualObjects[i] is VisualObjects.EnergyFiller)
                         {
                             __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.EnergyFiller).Power);
 
@@ -209,9 +177,41 @@ namespace AsteroidGame
                             bullet.Enabled = false;
                             __VisualObjects[i].Enabled = false;
                             (__VisualObjects[i] as VisualObjects.EnergyFiller).Restart();
-                            System.Media.SystemSounds.Asterisk.Play();
+                            System.Media.SystemSounds.Beep.Play();
                             __Refresh = __RefreshMax;
                         }
+                    }
+                }
+            }
+            for (int i = 0; i < __Asteroids.Count; i++)
+            {
+                if (__Asteroids[i].Enabled)
+                {
+                    if (__SpaceShip.CheckCollision(__Asteroids[i] as ICollision))
+                    {
+                        Program.__WriteLog($"Космический корабль столкнулся с астероидом (-{__Asteroids[i].Power}). Энерния: {__SpaceShip.Energy}");
+                        __GraphicMessage = "Астероид!";
+                        __Asteroids[i].Enabled = false;
+                        if (IsAsteroidEmpty())
+                            GenerateListAsteroids(__Asteroids.Count + 1);
+                        System.Media.SystemSounds.Asterisk.Play();
+                        __Refresh = __RefreshMax;
+                        continue;
+                    }
+                    foreach (VisualObjects.Bullet bullet in __Bullets)
+                    {
+                        if (!bullet.Enabled || !bullet.CheckCollision(__Asteroids[i] as ICollision))
+                            continue;
+                        __SpaceShip.ChangeEnergy(__Asteroids[i].Power);
+
+                        Program.__WriteLog($"Пуля сбила астероид (+{__Asteroids[i].Power}). Энерния: {__SpaceShip.Energy}");
+                        __GraphicMessage = "Пуля сбила астероид";
+                        bullet.Enabled = false;
+                        __Asteroids[i].Enabled = false;
+                        if (IsAsteroidEmpty())
+                            GenerateListAsteroids(__Asteroids.Count + 1);
+                        System.Media.SystemSounds.Asterisk.Play();
+                        __Refresh = __RefreshMax;
                     }
                 }
             }
@@ -220,15 +220,32 @@ namespace AsteroidGame
                 if(game_object.Enabled) game_object.Update();
             foreach (VisualObjects.Bullet bullet in __Bullets)
                 if(bullet.Enabled) bullet.Update();
-            //if(__EnergyFiller!= null && __EnergyFiller.Enabled) __EnergyFiller.Update();
+            foreach (VisualObjects.Asteroid asteroid in __Asteroids)
+                if (asteroid.Enabled) asteroid.Update();
 
             if (__Refresh > int.MinValue) __Refresh--;
             else  __Refresh = 0;
         }
-
-        //private static void LogGrathics(string message)
-        //{
-        //    __Buffer.Graphics.DrawString(message, SystemFonts.DefaultFont, Brushes.White, Width - message.Length - 1, 100);
-        //}
+        private static void GenerateListAsteroids(int count)
+        {
+            if (__Asteroids == null)
+                __Asteroids = new List<VisualObjects.Asteroid>();
+            else
+                __Asteroids.Clear();
+            Random rnd = new Random();
+            for (int i = 0; i < count; i++)
+                __Asteroids.Add(new VisualObjects.Asteroid(
+                                                       new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                                                       new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
+                                                       new Size(__VisualObjectsSize, __VisualObjectsSize),
+                                                       Image.FromFile(__ImageName)));
+        }
+        private static bool IsAsteroidEmpty()
+        {
+            foreach (VisualObjects.Asteroid asteroid in __Asteroids)
+                if (asteroid.Enabled)
+                    return false;
+            return true;
+        }
     }
 }
