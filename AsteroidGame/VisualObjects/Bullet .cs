@@ -7,7 +7,7 @@ namespace AsteroidGame.VisualObjects
     {
         private const int __BulletSizeX = 20;
         private const int __BulletSizeY = 5;
-        private const int __BulletSpeed = 3;
+        private const int __BulletSpeed = 15;
         public Bullet(int Position)
             : base(new Point(0, Position), Point.Empty, new Size(__BulletSizeX, __BulletSizeY))
         {
@@ -18,7 +18,7 @@ namespace AsteroidGame.VisualObjects
             if (_Position.X < SplashScreen.Width + __BulletSizeX)
                 _Position.X += __BulletSpeed;
             else
-                _Position.X = 0;
+                Enabled = false;
         }
         public override void Draw(Graphics g)
         {

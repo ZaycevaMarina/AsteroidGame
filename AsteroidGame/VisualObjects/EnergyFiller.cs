@@ -53,6 +53,7 @@ namespace AsteroidGame.VisualObjects
         public void Restart()
         {
             _Position.X = 0;
+            Enabled = true;
         }
     }
 }

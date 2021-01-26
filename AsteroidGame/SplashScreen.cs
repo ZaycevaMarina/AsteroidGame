@@ -14,7 +14,7 @@ namespace AsteroidGame
         private static VisualObject[] __VisualObjects;
         private static List<VisualObjects.Bullet> __Bullets = new();
         private static VisualObjects.SpaceShip __SpaceShip;
-        private static VisualObjects.EnergyFiller __EnergyFiller;
+        //private static VisualObjects.EnergyFiller __EnergyFiller;
 
         private static int __VisualObjectsCount = 30;
         private static int __VisualObjectsSize = 30;
@@ -134,11 +134,12 @@ namespace AsteroidGame
             Graphics g = __Buffer.Graphics;
             g.Clear(Color.Black);
             foreach (VisualObject visual_object in __VisualObjects)
-                visual_object?.Draw(g);
+                if(visual_object.Enabled) visual_object.Draw(g);
 
             __SpaceShip.Draw(g);
-            __Bullet?.Draw(g);
-            __EnergyFiller?.Draw(g);
+            foreach(VisualObjects.Bullet b in __Bullets)
+                if (b.Enabled) b.Draw(g);
+            //__EnergyFiller?.Draw(g);
 
             if (__SpaceShip != null)
             {
@@ -156,56 +157,73 @@ namespace AsteroidGame
             {
                 var obj = __VisualObjects[i];
 
-                if (obj is ICollision collision_object)
+                if (obj.Enabled && obj is ICollision collision_object)
                 {
-                    //__SpaceShip.CheckCollision(collision_object);
                     if (__SpaceShip.CheckCollision(collision_object))
                     {
                         if (collision_object is VisualObjects.EnergyFiller)
                         {
                             Program.__WriteLog($"Прибаление энергии (+{(__VisualObjects[i] as VisualObjects.EnergyFiller).Power}). Энерния: " + __SpaceShip.Energy);
                             __GraphicMessage = "Прибаление энергии";
+                            __VisualObjects[i].Enabled = false;
+                            (__VisualObjects[i] as VisualObjects.EnergyFiller).Restart();
                             __Refresh = __RefreshMax;
 
-                            Random rnd = new Random();
-                            __VisualObjects[i] = new VisualObjects.EnergyFiller(
-                                                        new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                                                        new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
-                                                        new Size(5, 5));
+                            //Random rnd = new Random();
+                            //__VisualObjects[i] = new VisualObjects.EnergyFiller(
+                            //                            new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                            //                            new Point(-rnd.Next(1, __VisualObjectMaxSpeed), 0),
+                            //                            new Size(5, 5));
                             continue;
                         }
                         else if (collision_object is VisualObjects.Asteroid)
                         {
                             Program.__WriteLog($"Космический корабль столкнулся с астероидом (-{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
                             __GraphicMessage = "Астероид!";
+                            __VisualObjects[i].Enabled = false;
                             __Refresh = __RefreshMax;
-                            __VisualObjects[i] = null;
                             continue;
                         }
                     }
+                    foreach (VisualObjects.Bullet bullet in __Bullets)
+                    {
+                        if (!bullet.Enabled || !bullet.CheckCollision(collision_object)) 
+                            continue;
+                        if (__VisualObjects[i] is VisualObjects.Asteroid)
+                        {
+                            __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.Asteroid).Power);
 
-                    if (__Bullet?.CheckCollision(collision_object) != true) continue;
-                    __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.Asteroid).Power);                    
+                            Program.__WriteLog($"Пуля сбила астероид (+{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
+                            __GraphicMessage = "Пуля сбила астероид";
+                            bullet.Enabled = false;
+                            __VisualObjects[i].Enabled = false;
+                            System.Media.SystemSounds.Beep.Play();
+                            __Refresh = __RefreshMax;
+                        }
+                        else if(__VisualObjects[i] is VisualObjects.EnergyFiller)
+                        {
+                            __SpaceShip.ChangeEnergy((__VisualObjects[i] as VisualObjects.EnergyFiller).Power);
 
-                    Program.__WriteLog($"Пуля сбила астероид (+{(__VisualObjects[i] as VisualObjects.Asteroid).Power}). Энерния: {__SpaceShip.Energy}");
-                    __GraphicMessage = "Пуля сбила астероид";
-                    __Refresh = __RefreshMax;
-
-                    __Bullet = null;
-                    __VisualObjects[i] = null;
-                    System.Media.SystemSounds.Beep.Play();
-                    __Refresh = __RefreshMax;
+                            Program.__WriteLog($"Пуля сбила аптечку (+{(__VisualObjects[i] as VisualObjects.EnergyFiller).Power}). Энерния: {__SpaceShip.Energy}");
+                            __GraphicMessage = "Пуля сбила аптечку";
+                            bullet.Enabled = false;
+                            __VisualObjects[i].Enabled = false;
+                            (__VisualObjects[i] as VisualObjects.EnergyFiller).Restart();
+                            System.Media.SystemSounds.Asterisk.Play();
+                            __Refresh = __RefreshMax;
+                        }
+                    }
                 }
             }
 
             foreach (var game_object in __VisualObjects)
-                game_object?.Update();
-            __Bullet?.Update();
-            __EnergyFiller?.Update();
-            if (__Refresh > int.MinValue)
-                __Refresh--;
-            else
-                __Refresh = 0;
+                if(game_object.Enabled) game_object.Update();
+            foreach (VisualObjects.Bullet bullet in __Bullets)
+                if(bullet.Enabled) bullet.Update();
+            //if(__EnergyFiller!= null && __EnergyFiller.Enabled) __EnergyFiller.Update();
+
+            if (__Refresh > int.MinValue) __Refresh--;
+            else  __Refresh = 0;
         }
 
         //private static void LogGrathics(string message)
