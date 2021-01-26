@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
-using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AsteroidGame
 {
@@ -11,7 +12,7 @@ namespace AsteroidGame
         private static BufferedGraphics __Buffer;
 
         private static VisualObject[] __VisualObjects;
-        private static VisualObjects.Bullet __Bullet;
+        private static List<VisualObjects.Bullet> __Bullets = new();
         private static VisualObjects.SpaceShip __SpaceShip;
         private static VisualObjects.EnergyFiller __EnergyFiller;
 
@@ -54,7 +55,11 @@ namespace AsteroidGame
             switch (E.KeyCode)
             {
                 case Keys.ControlKey:
-                    __Bullet = new VisualObjects.Bullet(__SpaceShip.Rect.Y);
+                    var disabled_bullet = __Bullets.FirstOrDefault(b => !b.Enabled);
+                    if (disabled_bullet != null)
+                        disabled_bullet.Restart(__SpaceShip.Rect.Y);
+                    else
+                        __Bullets.Add(new VisualObjects.Bullet(__SpaceShip.Rect.Y));
                     break;
 
                 case Keys.Up:

@@ -18,10 +18,12 @@ namespace AsteroidGame.VisualObjects
         }
         public override void Draw(Graphics g)
         {
+            if (!Enabled) return;
             g.DrawImage(Image, new Point(_Position.X, _Position.Y));
         }
         public override void Update()
         {
+            if (!Enabled) return;
             _Position.X += _Direction.X;
             if (_Position.X < 0)
                 _Position.X = SplashScreen.Width + _Size.Width;

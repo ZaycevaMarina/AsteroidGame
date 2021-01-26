@@ -14,6 +14,7 @@ namespace AsteroidGame.VisualObjects
         }
         public override void Update()
         {
+            if (!Enabled) return;
             if (_Position.X < SplashScreen.Width + __BulletSizeX)
                 _Position.X += __BulletSpeed;
             else
@@ -21,6 +22,7 @@ namespace AsteroidGame.VisualObjects
         }
         public override void Draw(Graphics g)
         {
+            if (!Enabled) return;
             var rect = Rect;
             g.FillEllipse(Brushes.Red, rect);
             g.DrawEllipse(Pens.White, rect);
@@ -29,9 +31,10 @@ namespace AsteroidGame.VisualObjects
         public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
 
 
-        public void Restart()
+        public void Restart(int Y)
         {
-            _Position.X = 0;
+            _Position = new Point(0, Y);
+            Enabled = true;
         }
     }
 }
