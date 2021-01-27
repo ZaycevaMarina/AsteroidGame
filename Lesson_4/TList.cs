@@ -8,14 +8,7 @@ namespace Lesson_4
     class TList<T>
     {
         public List<T> T_List { get; set; }
-        int len = 100;
         Dictionary<T, int> Frequency;
-
-        //public TList()
-        //    {
-        //        //for (int i = 0; i < len; i++)
-        //        //    T_List.Add(0);
-        //    }
         public void CalculateFrequency()
         {
             if (T_List == null)
@@ -28,16 +21,9 @@ namespace Lesson_4
                 else
                     Frequency[count]++;
             }
-        }
-
-        public void PrintFrequency()
-        {
-            if (Frequency == null)
-                return;
-            foreach (var fr in Frequency)
-            {
+            var frequency = Frequency.OrderBy(pair => pair.Key);
+            foreach (var fr in frequency)
                 Console.WriteLine($"Элемент {fr.Key} встречается {fr.Value} раз");
-            }
         }
 
         public void CalculateFrequencyLinq()
@@ -45,7 +31,10 @@ namespace Lesson_4
             if (T_List == null)
                 return;
             var group = from count in T_List
+                        orderby count
                         group count by count;
+            foreach (var fr in group)
+                Console.WriteLine($"Элемент {fr.Key} встречается {fr.Count()} раз");
         }
     }
 }

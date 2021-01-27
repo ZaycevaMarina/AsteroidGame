@@ -14,7 +14,7 @@ namespace Lesson_4
         static void Main(string[] args)
         {
             //а)
-            Console.WriteLine("а) Подсчёт, количества встречаемости в List<T>");
+            Console.WriteLine("а) Подсчёт количества встречаемости в List<int>");
             List<int> List_int = new List<int>();
             int len = 100;
             Random rnd = new Random();
@@ -28,7 +28,8 @@ namespace Lesson_4
                 else
                     Frequency[count]++;
             }
-            foreach(var fr in Frequency)
+            var frequency = Frequency.OrderBy(pair => pair.Key);
+            foreach(var fr in frequency)
             {
                 Console.WriteLine($"Число {fr.Key} встречается {fr.Value} раз");
             }
@@ -39,12 +40,10 @@ namespace Lesson_4
             for (int i = 0; i < len; i++)
                 T_List.T_List.Add((double)rnd.Next(0,10)/10);
             T_List.CalculateFrequency();
-            T_List.PrintFrequency();
             
             //в)
             Console.WriteLine("в) используя Linq");
             T_List.CalculateFrequencyLinq();
-            T_List.PrintFrequency();
 
             Console.WriteLine("Для завершения нажмите любую кнопку...");
             Console.ReadKey();
