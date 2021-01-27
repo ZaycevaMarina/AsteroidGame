@@ -21,8 +21,14 @@ namespace Lesson_4
                 else
                     Frequency[count]++;
             }
-            var frequency = Frequency.OrderBy(pair => pair.Key);
-            foreach (var fr in frequency)
+            Frequency = Frequency.OrderBy(pair => pair.Key).ToDictionary(fr=>fr.Key, fr=>fr.Value);
+        }
+
+        public void PrintFrequency()
+        {
+            if (Frequency == null)
+                return;
+            foreach (var fr in Frequency)
                 Console.WriteLine($"Элемент {fr.Key} встречается {fr.Value} раз");
         }
 
@@ -33,8 +39,9 @@ namespace Lesson_4
             var group = from count in T_List
                         orderby count
                         group count by count;
+            Frequency.Clear();
             foreach (var fr in group)
-                Console.WriteLine($"Элемент {fr.Key} встречается {fr.Count()} раз");
+                Frequency[fr.Key] = fr.Count();
         }
     }
 }
