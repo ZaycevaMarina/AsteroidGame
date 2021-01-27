@@ -16,6 +16,8 @@ namespace AsteroidGame
         public static Random __Rnd;
         protected static int __ToFastSpead = 100;
 
+        public bool Enabled { get; set; } = true;
+
         protected VisualObject(Point Position, Point Direction, Size Size)
         {
             if (Position.X < 0 || Position.X > SplashScreen.Width || Position.Y < 0 || Position.Y > SplashScreen.Height//Неверная позиция
