@@ -10,22 +10,20 @@ namespace Lesson_5
     {
         protected static int __IdEmp = 1;
         public int IdEmp { get; set; }
-        public int IdDep { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public double Salary { get; set; }
 
-        public Employee(int id_department, string name, int age, double salary)
+        public Employee(string name, int age, double salary)
         {
             IdEmp = __IdEmp++;
-            IdDep = id_department;
             Name = name;
             Age = age;
             Salary = salary;
         }
         public override string ToString()
         {
-            return $"{IdEmp}\t{IdDep}\t{Name}\t{Age}\t{Salary}";
+            return $"{IdEmp}\t{Name}\t{Age}\t{Salary}";
         }
     }
 }

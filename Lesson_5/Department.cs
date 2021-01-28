@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
 
@@ -7,97 +6,47 @@ namespace Lesson_5
 {
     public class Department
     {
-        public List<List<int>> IdsDep { get; private set; }
-
-        List<Employee> LEmployees = new List<Employee>();
-        public Department()
-        {
-            IdsDep = new List<List<int>>();
-        }
+        public string Name { get; set; }
+        public ObservableCollection<Employee> LEmployees = new ObservableCollection<Employee>();
 
         public Department(string file_name)
         {
-            IdsDep = new List<List<int>>();
+            //IdsDep = new List<List<int>>();
             FileStream f = new FileStream(file_name, FileMode.Open);
             StreamReader sr = new StreamReader(f);
             string line;
-            int id_dep;
             while ((line = sr.ReadLine()) != null)
             {
                 string[] s = line.Split(' ');
-                if (s.Length != 4)
+                if (s.Length != 3)
                     continue;
-                id_dep = int.Parse(s[0]);
-                Employee new_emp = new Employee(id_dep, s[1], int.Parse(s[2]), double.Parse(s[3]));
+                Employee new_emp = new Employee(s[0], int.Parse(s[1]), double.Parse(s[2]));
                 if (!ContainsEmplpyee(new_emp))
                 {
-                    if (IdsDep.Count >= id_dep && IdsDep.Count > 0)
-                    {
-                        if (!IdsDep[id_dep - 1].Contains(new_emp.IdEmp))
-                        {
-                            IdsDep[id_dep - 1].Add(new_emp.IdEmp);
-                            LEmployees.Add(new_emp);
-                        }
-                    }
-                    else
-                    {
-                        List<int> new_dep = new List<int>();
-                        new_dep.Add(new_emp.IdEmp);
-                        IdsDep.Add(new_dep);
-                        LEmployees.Add(new_emp);
-                    }
+                    LEmployees.Add(new_emp);
                 }
             }
             f.Close();
+            if (LEmployees.Count > 0)
+                Name = file_name.Remove(file_name.IndexOf('.'));
         }
-
-        public void AddEmployee(Employee emp)
+        public void AddEmployee(string emp_str)
         {
-            if (!ContainsEmplpyee(emp))
+            string[] s = emp_str.Split(' ');
+            if (s.Length != 3)
+                return;
+            Employee new_emp = new Employee(s[0], int.Parse(s[1]), double.Parse(s[2]));
+            if (!ContainsEmplpyee(new_emp))
             {
-                if (IdsDep.Count >= emp.IdDep && IdsDep.Count > 0)
-                {
-                    if (!IdsDep[emp.IdDep - 1].Contains(emp.IdEmp))
-                    {
-                        IdsDep[emp.IdDep - 1].Add(emp.IdEmp);
-                        LEmployees.Add(emp);
-                    }
-                }
-                else
-                {
-                    List<int> new_dep = new List<int>();
-                    new_dep.Add(emp.IdEmp);
-                    IdsDep.Add(new_dep);
-                    LEmployees.Add(emp);
-                }
+                LEmployees.Add(new_emp);
             }
         }
         public override string ToString()
         {
             string ret = "";
-            int id = 0;
-            foreach (List<int> dep in IdsDep)
-            {
-                ret += $"Отдел №{id + 1}:\n";
-                foreach (int id_emp in dep)
-                    ret += SearchEmployeeByIdDepartment(id_emp) + "\n";
-                ret += "\n";
-                id++;
-            }
+            foreach (Employee emp in LEmployees)
+                ret += emp.ToString() + "\n";
             return ret;
-        }
-         private string SearchEmployeeByIdDepartment(int id_emp)
-        {
-            string s = "";
-            foreach(Employee emp in LEmployees)
-            {
-                if (emp.IdEmp == id_emp)
-                {
-                    s = emp.ToString();
-                    break;
-                }
-            }
-            return s;
         }
 
         private bool ContainsEmplpyee(Employee new_emp)
@@ -108,6 +57,18 @@ namespace Lesson_5
                     return true;
             }
             return false; ;
+        }
+
+        public void RemoveEmployee(string emp_to_remove)
+        {
+            string[] s = emp_to_remove.Split('\t');
+            if (s.Length != 4)
+                return;
+            for (int i = 0; i < LEmployees.Count(); i++)
+            {
+                if (LEmployees[i].Name == s[1] && LEmployees[i].Age == int.Parse(s[2]) && LEmployees[i].Salary == double.Parse(s[3]))//s[0] = id
+                    LEmployees.Remove(LEmployees[i]);
+            }
         }
     }
 }
