@@ -8,22 +8,24 @@ namespace Lesson_5
 {
     public class Employee
     {
-        static int id = 0;
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-        public int Age { get; private set; }
-        public double Salary { get; private set; }
+        protected static int __IdEmp = 1;
+        public int IdEmp { get; set; }
+        public int IdDep { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public double Salary { get; set; }
 
-        public Employee(string name, int age, double salary)
+        public Employee(int id_department, string name, int age, double salary)
         {
-            Id = id++;
+            IdEmp = __IdEmp++;
+            IdDep = id_department;
             Name = name;
             Age = age;
             Salary = salary;
         }
         public override string ToString()
         {
-            return $"{Id}\t{Name}\t{Age}\t{Salary}";
+            return $"{IdEmp}\t{IdDep}\t{Name}\t{Age}\t{Salary}";
         }
     }
 }

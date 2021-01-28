@@ -9,21 +9,26 @@ namespace Lesson_5
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<Employee> items = new ObservableCollection<Employee>();
-        List<Employee> LEmployee = new List<Employee>();
+        //ObservableCollection<Employee> items = new ObservableCollection<Employee>();
+        ObservableCollection<Department> items = new ObservableCollection<Department>();
+        //List<Employee> LEmployee = new List<Employee>();
+        Department _Department;
         public MainWindow()
         {
             InitializeComponent();
-            FillList();
+            FillListEmployee();
         }
-        void FillList()
+        void FillListEmployee()
         {
             lbEmployee.ItemsSource = items;
-            LEmployee.Add(new Employee("Vasya", 22, 3000));
-            LEmployee.Add(new Employee("Petya", 25, 6000));
-            LEmployee.Add(new Employee("Kolya", 23, 8000));
-            foreach (Employee emp in LEmployee)
-                items.Add(emp);
+            //LEmployee.Add(new Employee(1, "Vasya", 22, 3000));
+            //LEmployee.Add(new Employee(1, "Petya", 25, 6000));
+            //LEmployee.Add(new Employee(2, "Kolya", 23, 8000));
+            //foreach (Employee emp in LEmployee)
+            //    items.Add(emp);
+            _Department = new Department("Employees.txt");
+            //foreach(List<int> iddep in _Department.IdsDep)
+                items.Add(_Department);
         }
 
         private void lbEmployee_Selected(object sender, RoutedEventArgs e)
@@ -38,9 +43,12 @@ namespace Lesson_5
 
         private void btnAddEmployee(object sender, RoutedEventArgs e)
         {
-            Employee emp = new Employee("Sergey", 26, 7000);
-            LEmployee.Add(emp);
-            items.Add(emp);
+            Employee emp = new Employee(2, "Sergey", 26, 7000);
+            //LEmployee.Add(emp);
+            //items.Add(emp);
+            _Department.AddEmployee(emp);
+            items.Clear();
+            items.Add(_Department);
         }
     }    
 }
