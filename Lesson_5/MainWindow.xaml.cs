@@ -20,7 +20,8 @@ namespace Lesson_5
         {
             __Departments.Add(new Department("Department1.txt"));
             __Departments.Add(new Department("Department2.txt"));
-            foreach(Department dep in __Departments)
+            __Departments.Add(new Department("Department3.txt"));
+            foreach (Department dep in __Departments)
                 ItemsDepNames.Add(dep.Name);
             cbDepNames.ItemsSource = ItemsDepNames;
         }
@@ -30,6 +31,16 @@ namespace Lesson_5
             window_department.ViewModel = e.AddedItems[0].ToString();
             window_department.Show();
             window_department.ShowViewModel();
+        }
+
+        private void btnAddDepartment(object sender, RoutedEventArgs e)
+        {
+            Department new_dep = new Department(tbFileName.Text);
+            foreach (Department dep in __Departments)
+                if (dep.Name == new_dep.Name)
+                    return;
+            __Departments.Add(new_dep);
+            ItemsDepNames.Add(new_dep.Name);
         }
     }    
 }

@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <ComboBox x:Name="cbDepNames" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top"  Height="50" Width="200" SelectionChanged="cbDepNames_SelectionChanged"/>
+        <ComboBox x:Name="cbDepNames" Margin="72,17,245,0" VerticalAlignment="Top"  Height="50" Width="200" 
+                  SelectionChanged="cbDepNames_SelectionChanged"
+                  Text="Отделы"/>
+        <Button Margin="0,0,20,20" Height="50" Width="151" VerticalAlignment="Bottom" HorizontalAlignment="Right"  
+                Click="btnAddDepartment">Добавить отдел из файла</Button>
+        <TextBox AcceptsReturn="True" x:Name="tbFileName" Margin="0,0,20,83" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="NoWrap" 
+                 Text="Department4.txt" Height="23" Width="151"/>
     </Grid>
 </Window>

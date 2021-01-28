@@ -11,7 +11,6 @@ namespace Lesson_5
 
         public Department(string file_name)
         {
-            //IdsDep = new List<List<int>>();
             FileStream f = new FileStream(file_name, FileMode.Open);
             StreamReader sr = new StreamReader(f);
             string line;

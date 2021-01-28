@@ -13,8 +13,7 @@ namespace Lesson_5
             InitializeComponent();
         }
         public void FillListEmployees()
-        {
-            
+        {            
             foreach(Department dep in MainWindow.__Departments)
                 if(dep.Name == ViewModel)
                 {
@@ -46,6 +45,16 @@ namespace Lesson_5
                 if (dep.Name == ViewModel && dep.LEmployees.Count > 0)
                 {
                     dep.RemoveEmployee(EmployeeToRemove);
+                }
+        }
+        private void btnAddEmployee(object sender, RoutedEventArgs e)
+        {
+            if (!int.TryParse(tbAge.Text, out int age) && !double.TryParse(tbSalary.Text, out double salary))
+                return;
+            foreach (Department dep in MainWindow.__Departments)
+                if (dep.Name == ViewModel && dep.LEmployees.Count > 0)
+                {
+                    dep.AddEmployee($"{tbName.Text} {age} {tbSalary.Text}");
                 }
         }
     }
