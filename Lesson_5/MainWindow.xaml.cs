@@ -4,9 +4,6 @@ using System.Windows;
 
 namespace Lesson_5
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         ObservableCollection<string> ItemsDepNames = new ObservableCollection<string>();
@@ -14,21 +11,22 @@ namespace Lesson_5
         public MainWindow()
         {
             InitializeComponent();
-            FillListEmployee();
+            FillListDepartment();
         }
-        void FillListEmployee()
+        void FillListDepartment()
         {
             __Departments.Add(new Department("Department1.txt"));
             __Departments.Add(new Department("Department2.txt"));
             __Departments.Add(new Department("Department3.txt"));
             foreach (Department dep in __Departments)
                 ItemsDepNames.Add(dep.Name);
-            cbDepNames.ItemsSource = ItemsDepNames;
+            lvDepNames.ItemsSource = ItemsDepNames;
         }
-        private void cbDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void lvDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             LBDepartment window_department = new LBDepartment();
-            window_department.ViewModel = e.AddedItems[0].ToString();
+            window_department.Title = "Отдел " + e.AddedItems[0].ToString();
+            window_department._CurrentDepartmentName = e.AddedItems[0].ToString();
             window_department.Show();
             window_department.ShowViewModel();
         }

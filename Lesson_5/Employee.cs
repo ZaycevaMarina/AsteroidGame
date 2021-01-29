@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lesson_5
+﻿namespace Lesson_5
 {
     public class Employee
     {
@@ -17,6 +11,13 @@ namespace Lesson_5
         public Employee(string name, int age, double salary)
         {
             IdEmp = __IdEmp++;
+            Name = name;
+            Age = age;
+            Salary = salary;
+        }
+
+        public void UpdateEmployee(string name, int age, double salary)
+        {
             Name = name;
             Age = age;
             Salary = salary;

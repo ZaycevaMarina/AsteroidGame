@@ -7,7 +7,9 @@ namespace Lesson_5
     public partial class LBDepartment : Window
     {
         ObservableCollection<Employee> ItemsEmployees = new ObservableCollection<Employee>();
-        private string EmployeeToRemove = "";
+        ObservableCollection<string> ItemsDepNames = new ObservableCollection<string>();
+        private string EmployeeSelected = "";
+        private string DepartmentSelected = "";
         public LBDepartment()
         {
             InitializeComponent();
@@ -15,23 +17,38 @@ namespace Lesson_5
         public void FillListEmployees()
         {            
             foreach(Department dep in MainWindow.__Departments)
-                if(dep.Name == ViewModel)
+                if(dep.Name == _CurrentDepartmentName)
                 {
                     ItemsEmployees = dep.LEmployees;
                 }
             lbEmployee.ItemsSource = ItemsEmployees;
         }
-        public string ViewModel { get; set; }
+        void FillListCbDepartment()
+        {            
+            foreach (Department dep in MainWindow.__Departments)
+                ItemsDepNames.Add(dep.Name);
+            cbDepNames.ItemsSource = ItemsDepNames;
+        }
+        public string _CurrentDepartmentName { get; set; }
         public void ShowViewModel()
         {
             FillListEmployees();
+            FillListCbDepartment();
         }
 
         private void lbEmployee_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             try
             {
-                EmployeeToRemove = e.AddedItems[0].ToString();
+                EmployeeSelected = e.AddedItems[0].ToString();
+                string[] s = EmployeeSelected.Split('\t');
+                if (s.Length != 4)
+                    return;
+                cbDepNames.Text = _CurrentDepartmentName;
+                tbId.Text = s[0];
+                tbName.Text = s[1];
+                tbAge.Text = s[2];
+                tbSalary.Text = s[3];
             }
             catch(Exception)
             {
@@ -42,20 +59,65 @@ namespace Lesson_5
         private void btnRemoveEmployee(object sender, RoutedEventArgs e)
         {
             foreach (Department dep in MainWindow.__Departments)
-                if (dep.Name == ViewModel && dep.LEmployees.Count > 0)
+                if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
                 {
-                    dep.RemoveEmployee(EmployeeToRemove);
+                    dep.RemoveEmployee(EmployeeSelected);
                 }
         }
         private void btnAddEmployee(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(tbAge.Text, out int age) && !double.TryParse(tbSalary.Text, out double salary))
+            int age;
+            double salary;
+            if (!int.TryParse(tbAge.Text, out age) && !double.TryParse(tbSalary.Text, out salary))
                 return;
             foreach (Department dep in MainWindow.__Departments)
-                if (dep.Name == ViewModel && dep.LEmployees.Count > 0)
+                if (dep.Name == _CurrentDepartmentName/* && dep.LEmployees.Count > 0*/)
                 {
-                    dep.AddEmployee($"{tbName.Text} {age} {tbSalary.Text}");
+                    try
+                    {
+                        dep.AddEmployee($"{tbName.Text} {age} {tbSalary.Text}");
+                    }
+                    catch (Exception ex)
+                    { MessageBox.Show(ex.Message); }
                 }
+        }
+        private void cbDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            cbDepNames.Text = e.AddedItems[0].ToString();
+            DepartmentSelected = e.AddedItems[0].ToString();
+        }
+
+        public void btUpdateEmployee(object sender, RoutedEventArgs e)
+        {
+            int age;
+            double salary;
+            string name = tbName.Text;
+            if (name == "" || !int.TryParse(tbAge.Text, out age) || !double.TryParse(tbSalary.Text, out salary))
+                return;
+            
+            if (_CurrentDepartmentName == DepartmentSelected)
+            {
+                if (EmployeeSelected == tbId.Text.ToString() + "\t" + name + "\t" + age + "\t" + salary)
+                    return;
+                foreach (Department dep in MainWindow.__Departments)
+                    if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
+                    {
+                        dep.UpdateEmployee(EmployeeSelected, tbId.Text.ToString() + "\t" + name + "\t" + age + "\t" + salary);
+                    }
+            }
+            else if(DepartmentSelected != "")
+            {
+                foreach (Department dep in MainWindow.__Departments)
+                    if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
+                    {
+                        dep.RemoveEmployee(EmployeeSelected);
+                    }
+                foreach (Department dep in MainWindow.__Departments)
+                    if (dep.Name == DepartmentSelected && dep.LEmployees.Count > 0)
+                    {
+                        dep.AddEmployee($"{name} {age} {salary}");
+                    }
+            }
         }
     }
 }

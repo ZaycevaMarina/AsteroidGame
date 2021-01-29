@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <ComboBox x:Name="cbDepNames" Margin="72,17,245,0" VerticalAlignment="Top"  Height="50" Width="200" 
-                  SelectionChanged="cbDepNames_SelectionChanged"
-                  Text="Отделы"/>
+        <ListView x:Name="lvDepNames" Margin="10,10,307,10" VerticalAlignment="Top"  Height="309" Width="200" 
+                  SelectionChanged="lvDepNames_SelectionChanged"/>
         <Button Margin="0,0,20,20" Height="50" Width="151" VerticalAlignment="Bottom" HorizontalAlignment="Right"  
                 Click="btnAddDepartment">Добавить отдел из файла</Button>
+
+        <Label TextBlock.TextAlignment="Left" Margin="0,0,101,111" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="23" Width="70"
+               Content="Имя файла"/>
         <TextBox AcceptsReturn="True" x:Name="tbFileName" Margin="0,0,20,83" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="NoWrap" 
                  Text="Department4.txt" Height="23" Width="151"/>
     </Grid>

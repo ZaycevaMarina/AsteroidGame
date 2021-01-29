@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
+using System;
 
 namespace Lesson_5
 {
@@ -39,6 +40,8 @@ namespace Lesson_5
             {
                 LEmployees.Add(new_emp);
             }
+            else
+                throw new Exception("Такой сотрудник(имя, возраст и зарплата) уже существует в департаменте");
         }
         public override string ToString()
         {
@@ -67,6 +70,21 @@ namespace Lesson_5
             {
                 if (LEmployees[i].Name == s[1] && LEmployees[i].Age == int.Parse(s[2]) && LEmployees[i].Salary == double.Parse(s[3]))//s[0] = id
                     LEmployees.Remove(LEmployees[i]);
+            }
+        }
+
+        public void UpdateEmployee(string emp_to_update, string new_emp)
+        {
+            string[] s = emp_to_update.Split('\t');
+            string[] s_new = new_emp.Split('\t');
+            if (s.Length != 4)
+                return;
+            if (s_new.Length != 4)
+                return;
+            for (int i = 0; i < LEmployees.Count(); i++)
+            {
+                if (LEmployees[i].Name == s[1] && LEmployees[i].Age == int.Parse(s[2]) && LEmployees[i].Salary == double.Parse(s[3]))//s[0] = id
+                    LEmployees[i].UpdateEmployee(s_new[1], int.Parse(s_new[2]), double.Parse(s_new[3]));
             }
         }
     }
