@@ -6,8 +6,8 @@ namespace Lesson_5
 {
     public partial class LBDepartment : Window
     {
-        ObservableCollection<Employee> ItemsEmployees = new ObservableCollection<Employee>();
-        ObservableCollection<string> ItemsDepNames = new ObservableCollection<string>();
+        private ObservableCollection<Employee> _ItemsEmployees = new ObservableCollection<Employee>();
+        private ObservableCollection<string> _ItemsDepNames = new ObservableCollection<string>();
         private string EmployeeSelected = "";
         private string DepartmentSelected = "";
         public LBDepartment()
@@ -19,15 +19,15 @@ namespace Lesson_5
             foreach(Department dep in MainWindow.__Departments)
                 if(dep.Name == _CurrentDepartmentName)
                 {
-                    ItemsEmployees = dep.LEmployees;
+                    _ItemsEmployees = dep.LEmployees;
                 }
-            lbEmployee.ItemsSource = ItemsEmployees;
+            lbEmployee.ItemsSource = _ItemsEmployees;
         }
         void FillListCbDepartment()
         {            
             foreach (Department dep in MainWindow.__Departments)
-                ItemsDepNames.Add(dep.Name);
-            cbDepNames.ItemsSource = ItemsDepNames;
+                _ItemsDepNames.Add(dep.Name);
+            cbDepNames.ItemsSource = _ItemsDepNames;
         }
         public string _CurrentDepartmentName { get; set; }
         public void ShowViewModel()
@@ -50,9 +50,11 @@ namespace Lesson_5
                 tbAge.Text = s[2];
                 tbSalary.Text = s[3];
             }
-            catch(Exception)
+            catch(System.IndexOutOfRangeException)
             {
-                //СРабатывает при удалении, когда после удаления обновляется список сотрудников в lbEmployee.ItemsSource, т.е. в e.AddedItems[0]
+                //СРабатывает при удалении, когда после удаления обновляется список сотрудников в lbEmployee.ItemsSource, 
+                //т.е. в e.AddedItems[0]
+                //MessageBox.Show(exp.ToString());
             }
         }
 
@@ -61,48 +63,55 @@ namespace Lesson_5
             foreach (Department dep in MainWindow.__Departments)
                 if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
                 {
-                    dep.RemoveEmployee(EmployeeSelected);
+                    if (int.TryParse(EmployeeSelected.Remove(EmployeeSelected.IndexOf('\t')), out int id))
+                    {
+                        dep.RemoveEmployee(id);
+                        lbEmployee.Items.Refresh();
+                    }
+                    break;
                 }
         }
         private void btnAddEmployee(object sender, RoutedEventArgs e)
         {
-            int age;
-            double salary;
-            if (!int.TryParse(tbAge.Text, out age) && !double.TryParse(tbSalary.Text, out salary))
+            if (!int.TryParse(tbAge.Text, out int age))
+                return;
+            if (!double.TryParse(tbSalary.Text, out double salary))
                 return;
             foreach (Department dep in MainWindow.__Departments)
                 if (dep.Name == _CurrentDepartmentName/* && dep.LEmployees.Count > 0*/)
                 {
-                    try
-                    {
-                        dep.AddEmployee($"{tbName.Text} {age} {tbSalary.Text}");
-                    }
-                    catch (Exception ex)
-                    { MessageBox.Show(ex.Message); }
+                    dep.AddEmployee(tbName.Text, age, salary);
+                    break;
                 }
         }
         private void cbDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            cbDepNames.Text = e.AddedItems[0].ToString();
-            DepartmentSelected = e.AddedItems[0].ToString();
+            if (e.AddedItems.Count > 0)
+            {
+                cbDepNames.Text = e.AddedItems[0].ToString();
+                DepartmentSelected = e.AddedItems[0].ToString();
+            }
         }
 
         public void btUpdateEmployee(object sender, RoutedEventArgs e)
         {
-            int age;
-            double salary;
             string name = tbName.Text;
-            if (name == "" || !int.TryParse(tbAge.Text, out age) || !double.TryParse(tbSalary.Text, out salary))
+            if (!int.TryParse(tbId.Text, out int id) || name == "" || !int.TryParse(tbAge.Text, out int age) || !double.TryParse(tbSalary.Text, out double salary))
                 return;
             
             if (_CurrentDepartmentName == DepartmentSelected)
             {
                 if (EmployeeSelected == tbId.Text.ToString() + "\t" + name + "\t" + age + "\t" + salary)
+                {
+                    MessageBox.Show("Данный сотрудник уже есть в текущем отделе"); ;
                     return;
+                }
                 foreach (Department dep in MainWindow.__Departments)
                     if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
                     {
-                        dep.UpdateEmployee(EmployeeSelected, tbId.Text.ToString() + "\t" + name + "\t" + age + "\t" + salary);
+                        dep.UpdateEmployee(id, name, age, salary);
+                        lbEmployee.Items.Refresh();
+                        break;
                     }
             }
             else if(DepartmentSelected != "")
@@ -110,12 +119,24 @@ namespace Lesson_5
                 foreach (Department dep in MainWindow.__Departments)
                     if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
                     {
-                        dep.RemoveEmployee(EmployeeSelected);
+                        if (int.TryParse(EmployeeSelected.Remove(EmployeeSelected.IndexOf('\t')), out id))
+                        {
+                            dep.RemoveEmployee(id);
+                            lbEmployee.Items.Refresh();
+                        }
+                        break;
                     }
                 foreach (Department dep in MainWindow.__Departments)
                     if (dep.Name == DepartmentSelected && dep.LEmployees.Count > 0)
                     {
-                        dep.AddEmployee($"{name} {age} {salary}");
+                        dep.AddEmployee(name, age, salary);
+                        break;
+                        //try
+                        //{
+                            //dep.AddEmployee(name, age, salary);
+                        //}
+                        //catch(DuplicateWaitObjectException exp)
+                        //{ MessageBox.Show(exp.ToString()); }//Исключение генерирутся в Depatment.cs
                     }
             }
         }

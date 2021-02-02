@@ -6,8 +6,8 @@ namespace Lesson_5
 {
     public partial class MainWindow : Window
     {
-        ObservableCollection<string> ItemsDepNames = new ObservableCollection<string>();
-        public static List<Department> __Departments = new List<Department>();
+        private ObservableCollection<string> _ItemsDepNames = new ObservableCollection<string>();
+        internal static List<Department> __Departments = new List<Department>();
         public MainWindow()
         {
             InitializeComponent();
@@ -19,8 +19,8 @@ namespace Lesson_5
             __Departments.Add(new Department("Department2.txt"));
             __Departments.Add(new Department("Department3.txt"));
             foreach (Department dep in __Departments)
-                ItemsDepNames.Add(dep.Name);
-            lvDepNames.ItemsSource = ItemsDepNames;
+                _ItemsDepNames.Add(dep.Name);
+            lvDepNames.ItemsSource = _ItemsDepNames;
         }
         private void lvDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -38,7 +38,7 @@ namespace Lesson_5
                 if (dep.Name == new_dep.Name)
                     return;
             __Departments.Add(new_dep);
-            ItemsDepNames.Add(new_dep.Name);
+            _ItemsDepNames.Add(new_dep.Name);
         }
     }    
 }

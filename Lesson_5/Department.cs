@@ -12,36 +12,35 @@ namespace Lesson_5
 
         public Department(string file_name)
         {
-            FileStream f = new FileStream(file_name, FileMode.Open);
-            StreamReader sr = new StreamReader(f);
-            string line;
-            while ((line = sr.ReadLine()) != null)
+            using (FileStream f = new FileStream(file_name, FileMode.Open))
             {
-                string[] s = line.Split(' ');
-                if (s.Length != 3)
-                    continue;
-                Employee new_emp = new Employee(s[0], int.Parse(s[1]), double.Parse(s[2]));
-                if (!ContainsEmplpyee(new_emp))
+                StreamReader sr = new StreamReader(f);
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    LEmployees.Add(new_emp);
+                    string[] s = line.Split(' ');
+                    if (s.Length != 3)
+                        continue;
+                    Employee new_emp = new Employee(s[0], int.Parse(s[1]), double.Parse(s[2]));
+                    if (!ContainsEmplpyee(new_emp))
+                    {
+                        LEmployees.Add(new_emp);
+                    }
                 }
+                sr.Close();
             }
-            f.Close();
             if (LEmployees.Count > 0)
                 Name = file_name.Remove(file_name.IndexOf('.'));
         }
-        public void AddEmployee(string emp_str)
+        public void AddEmployee(string name, int age, double salary)
         {
-            string[] s = emp_str.Split(' ');
-            if (s.Length != 3)
-                return;
-            Employee new_emp = new Employee(s[0], int.Parse(s[1]), double.Parse(s[2]));
+            Employee new_emp = new Employee(name, age, salary);
             if (!ContainsEmplpyee(new_emp))
             {
                 LEmployees.Add(new_emp);
             }
-            else
-                throw new Exception("Такой сотрудник(имя, возраст и зарплата) уже существует в департаменте");
+            //else
+                //throw new System.DuplicateWaitObjectException("Такой сотрудник(имя, возраст и зарплата) уже существует в департаменте");
         }
         public override string ToString()
         {
@@ -53,38 +52,30 @@ namespace Lesson_5
 
         private bool ContainsEmplpyee(Employee new_emp)
         {
-            foreach(Employee emp in LEmployees)
-            {
-                if (emp.Name == new_emp.Name && emp.Salary == new_emp.Salary && emp.Age == new_emp.Age)
-                    return true;
-            }
-            return false; ;
+            return LEmployees.Any(emp => emp.Name == new_emp.Name
+                && emp.Salary == new_emp.Salary
+                && emp.Age == new_emp.Age);
         }
-
-        public void RemoveEmployee(string emp_to_remove)
+        public void RemoveEmployee(int id_emp)
         {
-            string[] s = emp_to_remove.Split('\t');
-            if (s.Length != 4)
-                return;
             for (int i = 0; i < LEmployees.Count(); i++)
             {
-                if (LEmployees[i].Name == s[1] && LEmployees[i].Age == int.Parse(s[2]) && LEmployees[i].Salary == double.Parse(s[3]))//s[0] = id
+                if (LEmployees[i].IdEmp == id_emp)
+                {
                     LEmployees.Remove(LEmployees[i]);
+                    break;
+                }
             }
         }
-
-        public void UpdateEmployee(string emp_to_update, string new_emp)
+        public void UpdateEmployee(int id_emp, string name_new, int age_new, double salary_new)
         {
-            string[] s = emp_to_update.Split('\t');
-            string[] s_new = new_emp.Split('\t');
-            if (s.Length != 4)
-                return;
-            if (s_new.Length != 4)
-                return;
             for (int i = 0; i < LEmployees.Count(); i++)
             {
-                if (LEmployees[i].Name == s[1] && LEmployees[i].Age == int.Parse(s[2]) && LEmployees[i].Salary == double.Parse(s[3]))//s[0] = id
-                    LEmployees[i].UpdateEmployee(s_new[1], int.Parse(s_new[2]), double.Parse(s_new[3]));
+                if (LEmployees[i].IdEmp == id_emp)
+                {
+                    LEmployees[i].UpdateEmployee(name_new, age_new, salary_new);
+                    break;
+                }
             }
         }
     }
