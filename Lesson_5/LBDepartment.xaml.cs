@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace Lesson_5
+namespace Lesson_6_Binding_Trigger
 {
     public partial class LBDepartment : Window
     {

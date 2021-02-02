@@ -1,4 +1,4 @@
-﻿namespace Lesson_5
+﻿namespace Lesson_6_Binding_Trigger
 {
     public class Employee
     {

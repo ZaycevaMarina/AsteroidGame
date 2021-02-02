@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Lesson_5
+namespace Lesson_6_Binding_Trigger
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

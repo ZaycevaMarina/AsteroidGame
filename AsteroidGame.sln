@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsteroidGame", "AsteroidGame\AsteroidGame.csproj", "{7B52BF61-EFE2-4DB0-91E2-2E79A58C02DA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_4_2", "Lesson_4\Lesson_4_2.csproj", "{F7611231-108C-4040-AD71-DF89CCCAF621}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_4_3", "Lesson_4_3\Lesson_4_3.csproj", "{6E1AAD0D-FAED-460B-8353-EB0391572493}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_5", "Lesson_5\Lesson_5.csproj", "{6AB6DD75-3596-4580-9A66-DCA123FAA191}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_6_Binding_Trigger", "Lesson_5\Lesson_6_Binding_Trigger.csproj", "{6AB6DD75-3596-4580-9A66-DCA123FAA191}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,18 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B52BF61-EFE2-4DB0-91E2-2E79A58C02DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B52BF61-EFE2-4DB0-91E2-2E79A58C02DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B52BF61-EFE2-4DB0-91E2-2E79A58C02DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B52BF61-EFE2-4DB0-91E2-2E79A58C02DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7611231-108C-4040-AD71-DF89CCCAF621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7611231-108C-4040-AD71-DF89CCCAF621}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7611231-108C-4040-AD71-DF89CCCAF621}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7611231-108C-4040-AD71-DF89CCCAF621}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E1AAD0D-FAED-460B-8353-EB0391572493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E1AAD0D-FAED-460B-8353-EB0391572493}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E1AAD0D-FAED-460B-8353-EB0391572493}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E1AAD0D-FAED-460B-8353-EB0391572493}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Release|Any CPU.ActiveCfg = Release|Any CPU
