@@ -21,7 +21,7 @@ namespace Lesson_6_Binding_Trigger
                 {
                     _ItemsEmployees = dep.LEmployees;
                 }
-            lbEmployee.ItemsSource = _ItemsEmployees;
+            lvEmployee.ItemsSource = _ItemsEmployees;
         }
         void FillListCbDepartment()
         {            
@@ -36,7 +36,7 @@ namespace Lesson_6_Binding_Trigger
             FillListCbDepartment();
         }
 
-        private void lbEmployee_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void lvEmployee_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Lesson_6_Binding_Trigger
             }
             catch(System.IndexOutOfRangeException)
             {
-                //СРабатывает при удалении, когда после удаления обновляется список сотрудников в lbEmployee.ItemsSource, 
+                //СРабатывает при удалении, когда после удаления обновляется список сотрудников в lvEmployee.ItemsSource, 
                 //т.е. в e.AddedItems[0]
                 //MessageBox.Show(exp.ToString());
             }
@@ -66,7 +66,7 @@ namespace Lesson_6_Binding_Trigger
                     if (int.TryParse(EmployeeSelected.Remove(EmployeeSelected.IndexOf('\t')), out int id))
                     {
                         dep.RemoveEmployee(id);
-                        lbEmployee.Items.Refresh();
+                        //lvEmployee.Items.Refresh();
                     }
                     break;
                 }
@@ -110,7 +110,7 @@ namespace Lesson_6_Binding_Trigger
                     if (dep.Name == _CurrentDepartmentName && dep.LEmployees.Count > 0)
                     {
                         dep.UpdateEmployee(id, name, age, salary);
-                        lbEmployee.Items.Refresh();
+                        lvEmployee.Items.Refresh();
                         break;
                     }
             }
@@ -122,7 +122,7 @@ namespace Lesson_6_Binding_Trigger
                         if (int.TryParse(EmployeeSelected.Remove(EmployeeSelected.IndexOf('\t')), out id))
                         {
                             dep.RemoveEmployee(id);
-                            lbEmployee.Items.Refresh();
+                            lvEmployee.Items.Refresh();
                         }
                         break;
                     }
@@ -140,5 +140,7 @@ namespace Lesson_6_Binding_Trigger
                     }
             }
         }
+        //<ListBox Margin = "10,10,351,0" Name="lvEmployee" SelectionMode="Single" 
+        //         SelectionChanged="lvEmployee_SelectionChanged" VerticalAlignment="Top" Height="352" Grid.ColumnSpan="3"></ListBox>
     }
 }
