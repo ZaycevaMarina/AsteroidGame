@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_6_Binding_Trigger", "Lesson_5\Lesson_6_Binding_Trigger.csproj", "{6AB6DD75-3596-4580-9A66-DCA123FAA191}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson_7_DB_ADO.NET", "Lesson_7_DB_ADO.NET\Lesson_7_DB_ADO.NET.csproj", "{C55C049C-427A-4D65-A40E-1629D83632F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AB6DD75-3596-4580-9A66-DCA123FAA191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C55C049C-427A-4D65-A40E-1629D83632F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C55C049C-427A-4D65-A40E-1629D83632F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C55C049C-427A-4D65-A40E-1629D83632F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C55C049C-427A-4D65-A40E-1629D83632F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

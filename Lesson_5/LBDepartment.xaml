@@ -11,10 +11,9 @@
             <ColumnDefinition Width="15*"/>
             <ColumnDefinition Width="46*"/>
             <ColumnDefinition Width="203*"/>
-        </Grid.ColumnDefinitions>
-        <ListBox Margin="10,10,351,0" Name="lbEmployee" SelectionMode="Single" 
-                 SelectionChanged="lbEmployee_SelectionChanged" VerticalAlignment="Top" Height="352" Grid.ColumnSpan="3"></ListBox>
-
+        </Grid.ColumnDefinitions>        
+        <ListView Margin="10,10,351,0" x:Name="lvEmployee" VerticalAlignment="Top"  Height="374" 
+                  SelectionChanged="lvEmployee_SelectionChanged" Grid.ColumnSpan="3"/>
         <Button Margin="492,0,0,265" Height="25" Width="70" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                 Click="btnRemoveEmployee" Grid.Column="2">Удалить</Button>
         <Button Margin="0,0,47,377" Height="25" Width="70" VerticalAlignment="Bottom" HorizontalAlignment="Right"  

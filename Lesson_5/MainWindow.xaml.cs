@@ -1,17 +1,24 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+
 
 namespace Lesson_6_Binding_Trigger
 {
     public partial class MainWindow : Window
     {
         private ObservableCollection<string> _ItemsDepNames = new ObservableCollection<string>();
-        internal static List<Department> __Departments = new List<Department>();
+        public static List<Department> __Departments = new List<Department>();
         public MainWindow()
         {
             InitializeComponent();
             FillListDepartment();
+            //Binding binding = new Binding();
+            //binding.ElementName = "__Departments";                 // Элемент-источник
+            //binding.Path = new PropertyPath("Name");               // Свойство элемента-источника
+            //lvDepNames.SetBinding(TextBlock.TextProperty, binding);// Установка привязки для элемента-приемника
         }
         void FillListDepartment()
         {
@@ -20,7 +27,8 @@ namespace Lesson_6_Binding_Trigger
             __Departments.Add(new Department("Department3.txt"));
             foreach (Department dep in __Departments)
                 _ItemsDepNames.Add(dep.Name);
-            lvDepNames.ItemsSource = _ItemsDepNames;
+            lvDepNames.ItemsSource = _ItemsDepNames;//ItemsSource ="{Binding ElementName=MainWindow.__Departments, Path=Name }"
+            //lvDepNames.ItemsSource = "{Binding ElementName=__Departments, Path=Name}";
         }
         private void lvDepNames_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
