@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lesson_7_DB_ADO.NET"
         mc:Ignorable="d"
-        Title="EditWindow" Height="300" Width="300" Loaded="Window_Loaded">
+        Title="Изменение данных о сотруднике" Width="400" MaxWidth="400" MinHeight="300" MinWidth="600" Loaded="Window_Loaded">
     <Window.Resources>
     </Window.Resources>
     <Grid>
@@ -34,7 +34,9 @@
             <Label Content="Возраст:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
             <TextBox x:Name="tbAge" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2"  VerticalAlignment="Center" Width="120"/>
             <Label Content="Зарплата:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
-            <TextBox x:Name="tbSalary" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" VerticalAlignment="Center" Width="120"/>
+            <TextBox x:Name="tbSalary" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3" Grid.Row="3" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Отдел:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cbDepartment" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3" Grid.Row="4" VerticalAlignment="Center" Width="120" RenderTransformOrigin="0.5,2.174"/>
         </Grid>
         <Button x:Name="btSave" IsDefault="True" Content="Сохранить" Margin="10" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Click="btSave_Click"/>
         <Button x:Name="btCancel" IsCancel="True" Content="Отменить" Margin="10" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Click="btCancel_Click"/>

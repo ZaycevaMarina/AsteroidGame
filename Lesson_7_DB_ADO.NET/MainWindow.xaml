@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lesson_7_DB_ADO.NET"
         mc:Ignorable="d"
-        Title="MainWindow" Loaded="Window_Loaded" Width="600" MaxWidth="600" MinHeight="300" MinWidth="600">
+        Title="Отделы" Loaded="Window_Loaded" Width="600" MaxWidth="600" MinHeight="300" MinWidth="600">
 
     <Grid HorizontalAlignment="Left">
         <Grid.RowDefinitions>
@@ -17,7 +17,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="EmployeeDataGrid" Grid.ColumnSpan="3" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10" HorizontalAlignment="Center" IsReadOnly="True" >
+        <DataGrid x:Name="EmployeeDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="210,10,10,10" HorizontalAlignment="Center" IsReadOnly="True" Grid.Column="2" Width="219" >
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="IdColumn" Binding="{Binding Id}" Header="№" IsReadOnly="True" Width="Auto"/>
                 <DataGridTextColumn x:Name="NameColumn" Binding="{Binding Name}" Header="Имя" Width="Auto"/>
@@ -26,8 +26,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button x:Name="btAddEmployee" Content="Добавить" Click="btAddEmployee_Click" Grid.Column="0" Grid.Row="1" Width="70" Height="30" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center"/>
-        <Button x:Name="btUpdateEmployee" Content="Изменить" Click="btUpdateEmployee_Click" Grid.Column="1" Grid.Row="1" Width="70" Height="30" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center"/>
-        <Button x:Name="btDeleteEmployee" Content="Удалить" Click="btDeleteEmployee_Click" Grid.Column="2" Grid.Row="1" Width="70" Height="30" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="btAddEmployee" Content="Добавить" Click="btAddEmployee_Click" Grid.Column="2" Width="70" Height="30" HorizontalAlignment="Center" Margin="448,142,-79,248" VerticalAlignment="Center" RenderTransformOrigin="0.787,0.715"/>
+        <Button x:Name="btUpdateEmployee" Content="Изменить" Click="btUpdateEmployee_Click" Grid.Column="2" Width="70" Height="30" HorizontalAlignment="Right" Margin="0,213,-82,177" VerticalAlignment="Center"/>
+        <Button x:Name="btDeleteEmployee" Content="Удалить" Click="btDeleteEmployee_Click" Grid.Column="2" Width="70" Height="30" Margin="440.333,289,-92.333,101" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <ComboBox x:Name="cbDeparments" SelectionChanged="cbDeparments_SelectionChanged" Margin="10,25,281,358" Text="Выбрать отдел" Height="Auto" Grid.ColumnSpan="3"/>
+        <Button x:Name="btAddDepartment" Content="Добавить отдел" Click="btAddDepartment_Click" Grid.Column="2" Width="130" Height="30" Margin="210,30,99,24" RenderTransformOrigin="1.327,3.439" Grid.Row="1"/>
     </Grid>
 </Window>
