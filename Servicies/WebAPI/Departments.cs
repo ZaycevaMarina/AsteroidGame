@@ -61,11 +61,41 @@ namespace WebAPI
                 return Enumerable.Empty<Models.Employee>();
             }
 
-            //foreach (var emp in department.Employees)
-            //    emp.IdDep = null;
-
             //_Logger.LogInformation("Вывод данных по игроку id:{0}", id);
             return department.Employees;
+        }
+        [HttpPost("add/{DepartmentName}")] // api/players/add/Отдел 11
+        public Models.Employee AddEmployee(string DepartmentName, string EmployeeName, int Age, double Salary)
+        {
+            //_Logger.LogInformation("Добавление даных по игре для {0} - число набранных очков {1}", PlayerName, Scores);
+
+            var employee = _db.Employees.FirstOrDefault(emp => emp.Name == EmployeeName);
+            if (employee is null)
+            {
+                employee = new Models.Employee
+                {
+                    Name = EmployeeName,
+                    Age = Age,
+                    Salary = Salary
+                };
+                var department = _db.Departments.FirstOrDefault(dep => dep.Name == DepartmentName);
+                if (department is null)
+                {
+                    department = new Models.Department
+                    {
+                        Name = DepartmentName,
+                        Employees = new List<Models.Employee>()
+                    };
+                    department.Employees.Add(employee);
+                    _db.Departments.Add(department);
+                }
+                _db.Employees.Add(employee);
+                _db.SaveChanges();
+            }           
+
+            //_Logger.LogInformation("Данные поб игре для {0} доабвлены с id:{1}", PlayerName, game.Id);
+
+            return employee;
         }
     }    
 }

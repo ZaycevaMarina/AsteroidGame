@@ -7,11 +7,10 @@ namespace WebAPI.Models
 {
     public class Employee
     {
-        public int Id { get; /*private*/ set; }
+        public int Id { get; private set; }
         public string Name { get; /*private*/ set; }
         public int Age { get; /*private*/ set; }
         public double Salary { get; /*private*/ set; }
-        //public int IdDep { get; private set; }
 
         //public Employee(int id, string name, int age, double salary/*, int id_dep*/)
         //{
