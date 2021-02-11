@@ -16,21 +16,10 @@ namespace Lesson_7_DB_ADO.NET
         {
             InitializeComponent();
         }
-        //     <startup> 
-        //    <supportedRuntime version = "v4.0" sku=".NETFramework,Version=v4.7.2" />
-        //</startup>
-        //<DataGrid x:Name="DepartmentDataGrid" Grid.ColumnSpan="3" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10" HorizontalAlignment="Right" IsReadOnly="True" >
-        //        <DataGrid.Columns>
-        //            <DataGridTextColumn x:Name="IdDepColumn" Binding="{Binding IdDep}" Header="Отдел" IsReadOnly="True" Width="Auto"/>
-        //        </DataGrid.Columns>
-        //    </DataGrid
         private ObservableCollection<string> _ItemsDepNames = new ObservableCollection<string>();
 
         private void GetDepartmentNames()
         {
-            //SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE LIKE '%TABLE%'", connection);
-            //adapter.SelectCommand = command;
-            //adapter.SelectCommand.ExecuteReader();
             string sqlExpression = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE LIKE '%TABLE%'";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
